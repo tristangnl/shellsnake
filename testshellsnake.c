@@ -17,8 +17,8 @@ int main(void){
     curs_set(0); //masque le curseur
 
 
-    //initialisation score
-    int score = 0;
+    //initialisation taille
+    int taille = 0;
     //initialisation du plateau
     
     char plateau[TAILLE][TAILLE];
@@ -34,7 +34,7 @@ int main(void){
     creerTableauSansSerpent(plateau,cellulesVides,&tlogCellulesVides);
 
     placerPomme(plateau,cellulesVides,tlogCellulesVides);
-
+    int surPomme=0;
     //gameloop
 
 
@@ -66,9 +66,16 @@ int main(void){
         if(fleche=='\e'){//echap
             break;
         }
-        tete=deplacementSerpent(plateau,tete,dir);
+        surPomme=0;
+        tete=deplacementSerpent(plateau,tete,dir,&surPomme);
+        if(surPomme==1){
+            creerTableauSansSerpent(plateau,cellulesVides,&tlogCellulesVides);
+            placerPomme(plateau,cellulesVides,tlogCellulesVides);
+            taille++;
+        }
+        
         //queue
-        // for (int i = score; i>0; i--){
+        // for (int i = taille; i>0; i--){
         //     segments[i] =segments[i-1];
         // }
 
@@ -78,7 +85,7 @@ int main(void){
         // tete.y += dir.y;
 
         // if(tete.x == pomme.x && tete.y ==pomme.y){
-        //     score=score+1;
+        //     taille=taille+1;
 
         //     pomme.x = rand() % TAILLE;
         //     pomme.y = rand() % TAILLE;
@@ -86,7 +93,7 @@ int main(void){
 
         //placer pomme
         // if(tete == '@'){
-        //     score=score+1;
+        //     taille=taille+1;
         //     creerTableauSansSerpent(plateau,cellulesVides,&tlogCellulesVides);
         // placerPomme(plateau,cellulesVides,tlogCellulesVides);
         // }
@@ -98,17 +105,17 @@ int main(void){
         
         // mvaddch(pomme.y,pomme.x * 2,'@');
         
-        // for (int i= 0;i< score; i++){
+        // for (int i= 0;i< taille; i++){
         //     mvaddch(segments[i].y, segments[i].x * 2, 'o');
         // }
         // mvaddch(tete.y, tete.x * 2, 'O');
 
         affichPlateau(TAILLE,plateau);
-        usleep(300000);
+        usleep(200000);
 
     }
 
     endwin();
-    
+    printf("votre score: %d\n",taille);
     return 0;
 }
