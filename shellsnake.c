@@ -6,7 +6,7 @@ void initPlateau(int tlog,char plateau[][TAILLE]){
     for (i=0;i<tlog;i++){
         for (j=0;j<tlog;j++){
             if(i==0 || i==TAILLE-1 || j==0 || j==TAILLE-1) plateau[i][j]='X';
-            else if(i==TAILLE/2 && j==TAILLE/2) plateau[TAILLE/2][TAILLE/2]='O';
+            else if(i==TAILLE/2 && j==TAILLE/2) plateau[TAILLE/2][TAILLE/2]='^';
             else plateau[i][j]=' ';
         }
     }

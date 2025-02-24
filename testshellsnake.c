@@ -26,6 +26,7 @@ int main(void){
     Tab2 tete = {TAILLE/2,TAILLE/2}; //tete
     Tab2 dir={0,0}; //direction
     Tab2 corps[TAILLE*TAILLE]={tete,tete};
+    char caractete='^';
 
     //pomme
     int tlogCellulesVides;//initialisation
@@ -85,8 +86,20 @@ int main(void){
         // for (int it= 1;it<taille; it++){
         //     plateau[corps[it].y][corps[it].x]='o';//on réecrie les positions de la queue du serpent sur le plateau en o minuscule
         // }
+        if(dir.x==1 && dir.y==0){//droite
+            caractete='>';
+        }
+        else if(dir.x==-1 && dir.y==0){//gauche
+            caractete='<';
 
-        plateau[corps[0].y][corps[0].x]='O'; //on finit par écrire la tête en gros
+        }
+        else if(dir.x==0 && dir.y==-1){//haut
+            caractete='^';
+        }
+        else if(dir.x==0 && dir.y==1){//bas
+            caractete='v';
+        }
+        plateau[corps[0].y][corps[0].x]=caractete; //on finit par écrire la tête en gros
         if(surPomme==1){
             creerTableauSansSerpent(plateau,cellulesVides,&tlogCellulesVides);
             placerPomme(plateau,cellulesVides,tlogCellulesVides);
