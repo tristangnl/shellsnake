@@ -1,7 +1,5 @@
 #include "shellsnake.h"
 
-// #include <stdio.h>
-
 
 
 int main(void){
@@ -18,7 +16,7 @@ int main(void){
 
 
     //initialisation taille
-    int taille = 0;
+    int taille = 1;
     //initialisation du plateau
     
     char plateau[TAILLE][TAILLE];
@@ -27,7 +25,7 @@ int main(void){
     //snake
     Tab2 tete = {TAILLE/2,TAILLE/2}; //tete
     Tab2 dir={0,0}; //direction
-    Tab2 corps[TAILLE*TAILLE];
+    Tab2 corps[TAILLE*TAILLE]={tete,tete};
 
     //pomme
     int tlogCellulesVides;//initialisation
@@ -70,20 +68,25 @@ int main(void){
             break;
         }
         surPomme=0;
-        tete=deplacementSerpent(plateau,tete,dir,&surPomme);
-        
+        tete=deplacementTete(plateau,tete,dir,&surPomme);
+
         //queue
-        plateau[corps[taille].y][corps[taille].x]=' ';
+        
         for (int it = taille; it>0; it--){
-            corps[it] =corps[it-1];
+            corps[it] =corps[it-1];// dernière partie du serpet = avant derniere partie du serpent donc décalage du tableau
         }
+        corps[0] = tete;//on ajoute la tête en première position qui à été libéré par le décalage
         
-        corps[0] = tete;
+        plateau[corps[1].y][corps[1].x]='o';//la deuxième partie du serpent est son corp(pas besoin de tout réecrire, car le reste du corp va suivre jusqu'à être remplacé par " " vu qu'il est déjà écrit dans le tableau)
+
+        plateau[corps[taille].y][corps[taille].x]=' ';//on efface la dernière partie du corps du serpent sur le plateau
         
-        for (int it= 1;it<=taille; it++){
-            plateau[corps[it].y][corps[it].x]='o';
-        }
-        
+
+        // for (int it= 1;it<taille; it++){
+        //     plateau[corps[it].y][corps[it].x]='o';//on réecrie les positions de la queue du serpent sur le plateau en o minuscule
+        // }
+
+        plateau[corps[0].y][corps[0].x]='O'; //on finit par écrire la tête en gros
         if(surPomme==1){
             creerTableauSansSerpent(plateau,cellulesVides,&tlogCellulesVides);
             placerPomme(plateau,cellulesVides,tlogCellulesVides);
@@ -91,16 +94,9 @@ int main(void){
         }
         
 
-
-
         //draw
         erase();
         
-        
-        // for (int i= 0;i< taille; i++){
-        //     mvaddch(corps[i].y, corps[i].x * 2, 'o');
-        // }
-        // mvaddch(tete.y, tete.x * 2, 'O');
 
         affichPlateau(TAILLE,plateau);
         usleep(INTERVALLE*100000);
@@ -108,6 +104,6 @@ int main(void){
     }
 
     endwin();
-    printf("votre taille finale: %d\n",taille+1);
+    printf("votre taille finale: %d\n",taille);
     return 0;
 }

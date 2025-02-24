@@ -18,7 +18,7 @@ void affichPlateau(int tlog,char plateau[][TAILLE]);
 void initPlateau(int tlog,char plateau[][TAILLE]);
 void placerPomme(char plateau[][TAILLE],int cellulesVides[][2],int tlogCellulesVides);
 void creerTableauSansSerpent(char plateau[][TAILLE],int cellulesVides[][2],int *tlogCellulesVides);
-Tab2 deplacementSerpent(char plateau[][TAILLE],Tab2 tete, Tab2 dir,int *surPomme);
+Tab2 deplacementTete(char plateau[][TAILLE],Tab2 tete, Tab2 dir,int *surPomme);
 
 
 #endif //SHELLSNAKE_H
