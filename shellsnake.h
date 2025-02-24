@@ -6,7 +6,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
-#define TAILLE 21
+#define TAILLE 31
+#define INTERVALLE 2//en dixième de seconde
 
 typedef struct {
     int x;

@@ -7,7 +7,7 @@ void initPlateau(int tlog,char plateau[][TAILLE]){
         for (j=0;j<tlog;j++){
             if(i==0 || i==TAILLE-1 || j==0 || j==TAILLE-1) plateau[i][j]='X';
             else if(i==TAILLE/2 && j==TAILLE/2) plateau[TAILLE/2][TAILLE/2]='O';
-            else plateau[i][j]='.';
+            else plateau[i][j]=' ';
         }
     }
 }
@@ -31,7 +31,7 @@ void creerTableauSansSerpent(char plateau[][TAILLE],int cellulesVides[][2],int *
     *tlogCellulesVides=0;
     for (i=1;i<TAILLE-1;i++){
         for(j=1;j<TAILLE-1;j++){
-            if(plateau[i][j]=='O' || plateau[i][j]=='@'){
+            if(plateau[i][j]=='O' || plateau[i][j]=='o'){
                 continue;
             }
             else{
@@ -60,7 +60,7 @@ void placerPomme(char plateau[][TAILLE],int cellulesVides[][2],int tlogCellulesV
 
 Tab2 deplacementSerpent(char plateau[][TAILLE],Tab2 tete, Tab2 dir,int *surPomme){
     if(dir.x==1 && dir.y==0){//droite
-        plateau[tete.y][tete.x]='.';
+        plateau[tete.y][tete.x]=' ';
         tete.x++;
         if(plateau[tete.y][tete.x]=='@'){
             *surPomme=1;
@@ -68,7 +68,7 @@ Tab2 deplacementSerpent(char plateau[][TAILLE],Tab2 tete, Tab2 dir,int *surPomme
         plateau[tete.y][tete.x]='O';
     }
     else if(dir.x==-1 && dir.y==0){//gauche
-        plateau[tete.y][tete.x]='.';
+        plateau[tete.y][tete.x]=' ';
         tete.x--;
         if(plateau[tete.y][tete.x]=='@'){
             *surPomme=1;
@@ -76,7 +76,7 @@ Tab2 deplacementSerpent(char plateau[][TAILLE],Tab2 tete, Tab2 dir,int *surPomme
         plateau[tete.y][tete.x]='O';
     }
     else if(dir.x==0 && dir.y==-1){//haut
-        plateau[tete.y][tete.x]='.';
+        plateau[tete.y][tete.x]=' ';
         tete.y--;
         if(plateau[tete.y][tete.x]=='@'){
             *surPomme=1;
@@ -84,7 +84,7 @@ Tab2 deplacementSerpent(char plateau[][TAILLE],Tab2 tete, Tab2 dir,int *surPomme
         plateau[tete.y][tete.x]='O';
     }
     else if(dir.x==0 && dir.y==1){//bas
-        plateau[tete.y][tete.x]='.';
+        plateau[tete.y][tete.x]=' ';
         tete.y++;
         if(plateau[tete.y][tete.x]=='@'){
             *surPomme=1;

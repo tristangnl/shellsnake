@@ -2,7 +2,7 @@
 
 // #include <stdio.h>
 
-// Tab2 segments[256];
+
 
 int main(void){
     //initialize screen
@@ -27,6 +27,7 @@ int main(void){
     //snake
     Tab2 tete = {TAILLE/2,TAILLE/2}; //tete
     Tab2 dir={0,0}; //direction
+    Tab2 corps[TAILLE*TAILLE];
 
     //pomme
     int tlogCellulesVides;//initialisation
@@ -40,7 +41,9 @@ int main(void){
 
 
     affichPlateau(TAILLE,plateau);
+    // while(dir.x==0 && dir.y==0){
 
+    // }
     while(true){
         int fleche = wgetch(win);
         if (fleche == KEY_LEFT){
@@ -68,54 +71,43 @@ int main(void){
         }
         surPomme=0;
         tete=deplacementSerpent(plateau,tete,dir,&surPomme);
+        
+        //queue
+        plateau[corps[taille].y][corps[taille].x]=' ';
+        for (int it = taille; it>0; it--){
+            corps[it] =corps[it-1];
+        }
+        
+        corps[0] = tete;
+        
+        for (int it= 1;it<=taille; it++){
+            plateau[corps[it].y][corps[it].x]='o';
+        }
+        
         if(surPomme==1){
             creerTableauSansSerpent(plateau,cellulesVides,&tlogCellulesVides);
             placerPomme(plateau,cellulesVides,tlogCellulesVides);
             taille++;
         }
         
-        //queue
-        // for (int i = taille; i>0; i--){
-        //     segments[i] =segments[i-1];
-        // }
 
-        // segments[0] = tete;
 
-        // tete.x += dir.x;
-        // tete.y += dir.y;
-
-        // if(tete.x == pomme.x && tete.y ==pomme.y){
-        //     taille=taille+1;
-
-        //     pomme.x = rand() % TAILLE;
-        //     pomme.y = rand() % TAILLE;
-        // }
-
-        //placer pomme
-        // if(tete == '@'){
-        //     taille=taille+1;
-        //     creerTableauSansSerpent(plateau,cellulesVides,&tlogCellulesVides);
-        // placerPomme(plateau,cellulesVides,tlogCellulesVides);
-        // }
-        // creerTableauSansSerpent(plateau,cellulesVides,&tlogCellulesVides);
-        // placerPomme(plateau,cellulesVides,tlogCellulesVides);
 
         //draw
         erase();
         
-        // mvaddch(pomme.y,pomme.x * 2,'@');
         
         // for (int i= 0;i< taille; i++){
-        //     mvaddch(segments[i].y, segments[i].x * 2, 'o');
+        //     mvaddch(corps[i].y, corps[i].x * 2, 'o');
         // }
         // mvaddch(tete.y, tete.x * 2, 'O');
 
         affichPlateau(TAILLE,plateau);
-        usleep(200000);
+        usleep(INTERVALLE*100000);
 
     }
 
     endwin();
-    printf("votre score: %d\n",taille);
+    printf("votre taille finale: %d\n",taille+1);
     return 0;
 }
