@@ -31,7 +31,7 @@ void creerTableauSansSerpent(char plateau[][TAILLE],int cellulesVides[][2],int *
     *tlogCellulesVides=0;
     for (i=1;i<TAILLE-1;i++){
         for(j=1;j<TAILLE-1;j++){
-            if(plateau[i][j]=='O' || plateau[i][j]=='o'){
+            if(plateau[i][j]=='<' || plateau[i][j]=='>' || plateau[i][j]=='^' || plateau[i][j]=='v' || plateau[i][j]=='o'){
                 continue;
             }
             else{
@@ -58,26 +58,32 @@ void placerPomme(char plateau[][TAILLE],int cellulesVides[][2],int tlogCellulesV
     plateau[x][y]='@';
 }
 
-Tab2 deplacementTete(char plateau[][TAILLE],Tab2 tete, Tab2 dir,int *surPomme){
+Tab2 deplacementTete(char plateau[][TAILLE],Tab2 tete, Tab2 dir){
     if(dir.x==1 && dir.y==0){//droite
-        tete.x++;
+        (tete.x)++;
     }
     else if(dir.x==-1 && dir.y==0){//gauche
-        tete.x--;
+        (tete.x)--;
     }
     else if(dir.x==0 && dir.y==-1){//haut
-        tete.y--;
+        (tete.y)--;
     }
     else if(dir.x==0 && dir.y==1){//bas
-        tete.y++;
+        (tete.y)++;
     }
-    if(plateau[tete.y][tete.x]=='@'){
-        *surPomme=1;
-    };
     return tete;
 }
 
-
+void testCollisions(char plateau[][TAILLE],Tab2 tete,int *surPomme,int *collision){
+        if(plateau[tete.y][tete.x]=='@'){
+            *surPomme=1;
+            return;
+        }
+        if(plateau[tete.y][tete.x]=='X'||plateau[tete.y][tete.x]=='o'){
+            *collision=1;
+            return;
+        }
+}
 
 //     int fleche = wgetch(win);
 //     if (fleche == KEY_LEFT){
@@ -106,11 +112,3 @@ Tab2 deplacementTete(char plateau[][TAILLE],Tab2 tete, Tab2 dir,int *surPomme){
 // }
 
 
-
-// bool testCollisionPomme(){
-
-// }
-
-// bool testCollisionMurEtQueue(){
-
-// }
