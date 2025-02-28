@@ -39,7 +39,6 @@ int main(void){
     //initialisation
     int surPomme=0,collision=0;
 
-    // affichPlateau(TAILLE,plateau);
     //gameloop
     while(true){
         int fleche = wgetch(win);
