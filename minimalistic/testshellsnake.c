@@ -78,11 +78,11 @@ int main(void){
         affichPlateau(plateau);
         refresh();//sinon le plateau n'a pas le temps de s'afficher complétement et le usleep() s'active
         if(collision==1){
-            usleep(INTERVALLE*200000);
+            usleep(INTERVALLE*800000);
             break;
         }
         if(taille==(TAILLEX-2)*(TAILLEY-2)){//si le serpent à atteint la taille maximale
-            usleep(INTERVALLE*3*100000);
+            usleep(INTERVALLE*10*100000);
             break;
         }
         usleep(INTERVALLE*100000);
