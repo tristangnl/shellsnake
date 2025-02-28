@@ -1,13 +1,17 @@
 #include "shellsnake.h"
 
 int main(void){
-    //initialize screen
+    //initialisation fenêtre
     WINDOW *win = initscr();
 
-    //initialisation random
+    //initialisation aléatoire
     srand(time(NULL));
+    // initialisation pour pouvoir utiliser les couleurs avec les printw de ncurses
+    // start_color();
+    // init_pair(1, COLOR_GREEN,0);
+    // attron(COLOR_PAIR(1));
 
-    // take player input
+    // entrées clavier
     keypad(win, true); //active les touches spéciales(flèches)
     nodelay(win,true);//permet de lire l'entrée de l'utilisateur en permanance
     curs_set(0); //masque le curseur
@@ -16,18 +20,18 @@ int main(void){
     //initialisation taille
     int taille = 1;
     //initialisation du plateau
-    char plateau[TAILLE][TAILLE];
-    initPlateau(TAILLE,plateau); 
+    char plateau[TAILLEY][TAILLEX];
+    initPlateau(plateau); 
 
     //snake
-    Tab2 tete = {TAILLE/2,TAILLE/2}; //tete
+    Tab2 tete = {TAILLEX/2,TAILLEY/2}; //tete
     Tab2 dir={0,0}; //direction
-    Tab2 corps[TAILLE*TAILLE]={tete,tete};//pour qu'il soit positionné au milieu
+    Tab2 corps[(TAILLEX-2)*(TAILLEY-2)]={tete,tete};//pour qu'il soit positionné au milieu
     char caractete='^';//caractère de la tête au démarrage du jeu
 
     //pomme
     int tlogCellulesVides;//initialisation
-    int cellulesVides[TAILLE*TAILLE][2];
+    int cellulesVides[(TAILLEX-2)*(TAILLEY-2)][2];
     creerTableauSansSerpent(plateau,cellulesVides,&tlogCellulesVides);//creer tableau de tt les positions disponibles pour placer une pomme
 
     placerPomme(plateau,cellulesVides,tlogCellulesVides);//selectionne aléatoirement une case du tableau de positions disponibles pour placer une pomme
@@ -39,22 +43,22 @@ int main(void){
     //gameloop
     while(true){
         int fleche = wgetch(win);
-        if (fleche == KEY_LEFT){//gauche
+        if (fleche == KEY_LEFT){
             if(dir.x == 1) continue;
             dir.x =-1;
             dir.y=0;
         }
-        if (fleche == KEY_RIGHT){//droite
+        if (fleche == KEY_RIGHT){
             if(dir.x == -1) continue;
             dir.x =1;
             dir.y=0;
         }
-        if (fleche == KEY_DOWN){//bas
+        if (fleche == KEY_DOWN){
             if(dir.y == -1) continue;
             dir.x =0;
             dir.y=1;
         }
-        if (fleche == KEY_UP){//haut
+        if (fleche == KEY_UP){
             if(dir.y == 1) continue;
             dir.x =0;
             dir.y=-1;
@@ -72,24 +76,25 @@ int main(void){
         for (int it = taille; it>0; it--){
             corps[it] =corps[it-1];// dernière partie du serpent = avant derniere partie du serpent donc décalage du tableau
         }
-        corps[0] = tete;//on ajoute la tête en première position qui à été libéré par le décalage
+        corps[0] = tete;//on ajoute la tête en première position qui a été libéré par le décalage
         
-        plateau[corps[1].y][corps[1].x]='o';//la deuxième partie du serpent est son corp(pas besoin de tout réecrire, car le reste du corp va suivre jusqu'à être remplacé par " " vu qu'il est déjà écrit dans le tableau)
-
-        plateau[corps[taille].y][corps[taille].x]=' ';//on efface la dernière partie du corps du serpent sur le plateau
+        plateau[corps[1].y][corps[1].x]='o';//la deuxième partie du serpent est son corps(pas besoin de tout réecrire, car le reste du corp va suivre jusqu'à être remplacé par " " vu qu'il est déjà écrit dans le tableau)
+        if(plateau[corps[taille].y][corps[taille].x]!='@'){
+            plateau[corps[taille].y][corps[taille].x]=' ';//on efface la dernière partie du corps du serpent sur le plateau
+        }
         
         //tete
-        if(dir.x==1 && dir.y==0){//droite
+        if(dir.x==1 && dir.y==0){
             caractete='>';
         }
-        else if(dir.x==-1 && dir.y==0){//gauche
+        else if(dir.x==-1 && dir.y==0){
             caractete='<';
 
         }
-        else if(dir.x==0 && dir.y==-1){//haut
+        else if(dir.x==0 && dir.y==-1){
             caractete='^';
         }
-        else if(dir.x==0 && dir.y==1){//bas
+        else if(dir.x==0 && dir.y==1){
             caractete='v';
         }
         plateau[corps[0].y][corps[0].x]=caractete; //on finit par écrire la tête sur la nouvelle position du tableau
@@ -101,15 +106,16 @@ int main(void){
             taille++;
         }
 
-        
-
-        //draw
+        //affichage
         erase();
-        
-        affichPlateau(TAILLE,plateau);
+        affichPlateau(plateau);
         refresh();//sinon le plateau n'a pas le temps de s'afficher complétement et le usleep s'active
         if(collision==1){
-            usleep(INTERVALLE*500000);
+            usleep(INTERVALLE*200000);
+            break;
+        }
+        if(taille==(TAILLEX-2)*(TAILLEY-2)){
+            usleep(INTERVALLE*3*100000);
             break;
         }
         usleep(INTERVALLE*100000);
@@ -119,5 +125,8 @@ int main(void){
 
     endwin();
     printf("votre taille finale: %d\n",taille);
+    if(taille==(TAILLEX-2)*(TAILLEY-2)){
+        printf("incroyable, vous avez mangé toutes les pommes\n");
+    }
     return 0;
 }
