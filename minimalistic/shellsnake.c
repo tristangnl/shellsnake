@@ -41,16 +41,10 @@ void creerTableauSansSerpent(char plateau[][TAILLEX],int cellulesVides[][2],int 
             }
         }
     }
-    // if(*tlogCellulesVides==0){
-    //     printw('erreur: plus de place sur le plateau, vous avez gagnez');//lancer exception?
-    // }
 }
 
 void placerPomme(char plateau[][TAILLEX],int cellulesVides[][2],int tlogCellulesVides){
     int x,y,aleatoire;
-    if(tlogCellulesVides==0){
-        printw("erreur: plus de place sur le plateau, vous avez gagnez"); //lancer exception?
-    }
     aleatoire=rand() % tlogCellulesVides;//entre 0 et tlogCellulesVides[inclus]
 
     x=cellulesVides[aleatoire][0];
@@ -74,6 +68,36 @@ Tab2 deplacementTete(char plateau[][TAILLEX],Tab2 tete, Tab2 dir){
     return tete;
 }
 
+
+void majPlateau(char plateau[][TAILLEX],Tab2 corps[],Tab2 tete,int taille,Tab2 dir){
+    //corps        
+    for (int it = taille; it>0; it--){
+        corps[it] =corps[it-1];// dernière partie du serpent = avant derniere partie du serpent donc décalage du tableau
+    }
+    corps[0] = tete;//on ajoute la tête en première position qui a été libéré par le décalage
+    
+    plateau[corps[1].y][corps[1].x]='o';//la deuxième partie du serpent est son corps(pas besoin de tout réecrire, car le reste du corp va suivre jusqu'à être remplacé par " " vu qu'il est déjà écrit dans le tableau)
+    if(plateau[corps[taille].y][corps[taille].x]!='@'){
+        plateau[corps[taille].y][corps[taille].x]=' ';//on efface la dernière partie du corps du serpent sur le plateau sauf si une pomme est apparue par dessus entre temps
+    }
+    
+    //tete
+    if(dir.x==1 && dir.y==0){
+        plateau[corps[0].y][corps[0].x]='>';
+    }
+    else if(dir.x==-1 && dir.y==0){
+        plateau[corps[0].y][corps[0].x]='<';
+
+    }
+    else if(dir.x==0 && dir.y==1){
+        plateau[corps[0].y][corps[0].x]='v';
+    }
+    else{
+        plateau[corps[0].y][corps[0].x]='^';
+    }
+    //on finit par écrire la tête sur la nouvelle position du tableau
+}
+
 void testCollisions(char plateau[][TAILLEX],Tab2 tete,int *surPomme,int *collision){
         if(plateau[tete.y][tete.x]=='@'){
             *surPomme=1;
@@ -84,31 +108,3 @@ void testCollisions(char plateau[][TAILLEX],Tab2 tete,int *surPomme,int *collisi
             return;
         }
 }
-
-//     int fleche = wgetch(win);
-//     if (fleche == KEY_LEFT){
-//         if(dir.x == 1) return;
-//         dir.x =-1;
-//         dir.y=0;
-//     }
-//     if (fleche == KEY_RIGHT){
-//         if(dir.x == -1) return;
-//         dir.x =1;
-//         dir.y=0;
-//     }
-//     if (fleche == KEY_DOWN){
-//         if(dir.y == -1) return;
-//         dir.x =0;
-//         dir.y=1;
-//     }
-//     if (fleche == KEY_UP){
-//         if(dir.y == 1) return;
-//         dir.x =0;
-//         dir.y=-1;
-//     }
-//     if(fleche=='\e'){//echap
-//         break;
-//     }
-// }
-
-
