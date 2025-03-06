@@ -7,7 +7,9 @@
 //ajouter option personnalisé pour choisir une taille ou vitesse personnalisé saisie controlée en x et y pour la taille
 //mettre tout en francais ou tout en anglais
 //ajouter nbPomme?
+//ameliorer bordures?
 //plus ajouter commandes sur le menu?//sur droite quand on va sur le start par exemple
+//tester si les couleurs sont dispo pour le shell avant de lancer
 
 int lancerPartie(int largeur, int hauteur,int vitesse){
     //initialisation plateau
@@ -111,53 +113,68 @@ int lancerPartie(int largeur, int hauteur,int vitesse){
     return taille;
 }
 
-void afficheMenu(WINDOW *win,char *color,char size[][10],char speed[][10],int pos,int itsize,int itspeed){
+void afficheMenu(WINDOW *win,char color[][8],char size[][10],char speed[][10],int pos,int itsize,int itspeed,int itcolor){
     switch(pos){
         case 1: 
-            wprintw(win,"\n color  <%s>\n",color);
+            wprintw(win,"\n color  <%s>\n",color[itcolor]);
             wprintw(win," size   %s   \n",size[itsize]);
             wprintw(win," speed  %s   \n",speed[itspeed]);
             wprintw(win,"\tstart\n");
         break;
         case 2:
-            wprintw(win,"\n color   %s \n",color);
+            wprintw(win,"\n color   %s \n",color[itcolor]);
             wprintw(win," size  <%s>  \n",size[itsize]);
             wprintw(win," speed  %s   \n",speed[itspeed]);
             wprintw(win,"\tstart\n");
             break;
         case 3:
-            wprintw(win,"\n color   %s \n",color);
+            wprintw(win,"\n color   %s \n",color[itcolor]);
             wprintw(win," size   %s   \n",size[itsize]);
             wprintw(win," speed <%s>  \n",speed[itspeed]);
             wprintw(win,"\tstart\n");
             break;
         case 4:
-            wprintw(win,"\n color   %s \n",color);
+            wprintw(win,"\n color   %s \n",color[itcolor]);
             wprintw(win," size   %s   \n",size[itsize]);
             wprintw(win," speed  %s   \n",speed[itspeed]);
             wprintw(win,"      < start >\n");
             break;
     }
-
-
-    
-
-
-
 }
+
 void menu(void){
     initscr();
     noecho();
     curs_set(0); //masque le curseur
+
+    if (!has_colors()) {  // permet de vérifier si le terminal supporte ncurses en général
+        endwin();
+        printf("Votre terminal ne supporte pas les couleurs et la gestion des fenêtres.\n");
+        exit(1);
+    }
+
+    start_color();
+    use_default_colors();
+    //initialisations des couples de couleurs(police,arrière plan)
+    init_pair(1, COLOR_WHITE,-1);
+    init_pair(2, COLOR_RED,-1);
+    init_pair(3, COLOR_GREEN,-1);
+    init_pair(4, COLOR_YELLOW,-1);
+    init_pair(5, COLOR_BLUE,-1);
+    init_pair(6, COLOR_MAGENTA,-1);
+    init_pair(7, COLOR_CYAN,-1);
+    init_pair(8, COLOR_BLACK,-1);
+
+
 
     int pos=4,score;
     WINDOW *win= newwin(6,23,0,0);
     keypad(win, true); //active les touches spéciales (flèches)
     char speed[3][10]={"  lent   ","  moyen  ","  rapide "};
     char size[3][10]={"  petit  ","  moyen  ","  grand  "};
-    int itspeed=1,itsize=1;
-    
-    afficheMenu(win," default ",size,speed,pos,itsize,itspeed);
+    char color[9][8]={"default","blanc","rouge","vert","jaune","bleu","magenta","cyan","noir"};
+    int itspeed=1,itsize=1,itcolor=0;
+    afficheMenu(win,color,size,speed,pos,itsize,itspeed,itcolor);
     box(win, 0, 0);
     int fleche = wgetch(win);
     
@@ -175,6 +192,12 @@ void menu(void){
                 }
                 else itsize--;
             }
+            else if(pos==1){
+                if(itcolor==0){
+                    itcolor=8;
+                }
+                else itcolor--;
+            }
         }
         if (fleche == KEY_RIGHT){
             if(pos==3){
@@ -189,6 +212,12 @@ void menu(void){
                 }
                 else itsize++;
             }
+            else if(pos==1){
+                if(itcolor==8){
+                    itcolor=0;
+                }
+                else itcolor++;
+            }
         }
         if (fleche == KEY_DOWN){
             if(pos==4) pos=1;
@@ -197,9 +226,8 @@ void menu(void){
         if (fleche == KEY_UP){
             if(pos==1) pos=4;
             else pos--;
-            
         }
-        if(fleche=='q'){//echap
+        if(fleche=='q'){
             break;
         }
         if(fleche=='\n'){
@@ -230,10 +258,19 @@ void menu(void){
                         largeur=41;
                     break;
                 }
+                if(itcolor!=0){
+                    attron(COLOR_PAIR(itcolor));
+                }
                 score=lancerPartie(largeur,hauteur,vitesse);
+                if(itcolor!=0){
+                    attroff(COLOR_PAIR(itcolor));
+                }
                 clear();
                 refresh();
-            //ajt affichage score
+                // printf("votre taille finale: %d\n",score);
+                // if(score==(largeur-2)*(hauteur-2)){
+                //     printf("incroyable, vous avez mangé toutes les pommes!\n");
+                // }
             } 
             
             else pos++;
@@ -241,8 +278,14 @@ void menu(void){
         
 
         werase(win);
-        afficheMenu(win," default ",size,speed,pos,itsize,itspeed);
+        if(itcolor!=0){
+            wattron(win,COLOR_PAIR(itcolor));
+        }
+        afficheMenu(win,color,size,speed,pos,itsize,itspeed,itcolor);
+        
+        
         box(win, 0, 0);
+        if(itcolor!=0) wattroff(win,COLOR_PAIR(itcolor));
         wrefresh(win);
         fleche = wgetch(win);
     }
