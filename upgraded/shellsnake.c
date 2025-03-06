@@ -111,9 +111,21 @@ void testCollisions(char **plateau,int largeur, int hauteur,Tab2 tete,int *surPo
 
 
 char** allouerPlateau(int hauteur, int largeur) {
-    char** plateau = malloc(hauteur * sizeof(char*)); // Allocation des hauteur
+    char** plateau = (char**)malloc(hauteur * sizeof(char*));
+    if (plateau == NULL) {
+        printf("Échec de l'allocation mémoire\n");
+        exit(1);
+    }
     for (int i = 0; i < hauteur; i++) {
-        plateau[i] = malloc(largeur * sizeof(char)); // Allocation des largeur
+        plateau[i] = (char*)malloc(largeur * sizeof(char));
+        if (plateau[i] == NULL) {
+            for (int ifree = 0; ifree < i; ifree++) {
+                free(plateau[ifree]);
+            }
+            free(plateau);
+            printf("Échec de l'allocation mémoire\n");
+            exit(1);
+        }
     }
     return plateau;
 }

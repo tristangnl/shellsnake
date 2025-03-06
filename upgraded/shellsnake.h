@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
+#include <string.h>
 #define TAILLEX 31//minimum 9 cases au centre du cadre disponible pour le serpent
 #define TAILLEY 19//deux nombres impairs pour que le serpent apparaisse au centre
 #define INTERVALLE 1.3//en dixième de seconde
