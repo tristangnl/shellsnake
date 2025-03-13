@@ -156,53 +156,81 @@ void afficheMenu(WINDOW *win1,char colorArray[][8],char sizeArray[][10],char spe
 
 
 
-int customMenuSize(int *width,int *height,float *speed,int itcolor){
+int customMenuSize(int isSize,int isSpeed,int *width,int *height,float *speed,int itcolor){
     WINDOW *wincustom= newwin(8,18,11,22);
     keypad(wincustom, true);
     
     wattron(wincustom,COLOR_PAIR(itcolor));
     wattron(wincustom,COLOR_PAIR(itcolor));
 
+
+    int tmpwidth=(*width),tmpheight=(*height);
+    float speedselector=((0.1-(*speed))/0.1)+50;
     int key=-1;
-    while(key!='\n'){
-        werase(wincustom);
-        wprintw(wincustom,"\n  width  < %d >\n",(*width)-2);
-        box(wincustom,0,0);
-        key=wgetch(wincustom);
-        if(key==KEY_LEFT && (*width)>5){
-            (*width)=(*width)-2;
+    if(isSize==TRUE){
+        while(key!='\n'){
+            werase(wincustom);
+            wprintw(wincustom,"\n  width  < %d >\n",tmpwidth-2);
+            box(wincustom,0,0);
+            key=wgetch(wincustom);
+            if(key==KEY_LEFT && tmpwidth>5){
+                tmpwidth=tmpwidth-2;
+            }
+            else if(key==KEY_RIGHT && tmpwidth<101){
+                tmpwidth=tmpwidth+2;
+            }
+            else if(key=='q'){
+                return TRUE;
+            }
         }
-        else if(key==KEY_RIGHT && (*width)<101){
-            (*width)=(*width)+2;
-        }
-        else if(key=='q'){
-            return TRUE;
+
+        //limiter le nombre de protection (*height) qui ne servent à rien
+        key=-1;
+
+        while(key!='\n'){
+            werase(wincustom);
+            wprintw(wincustom,"\n  width  < %d >",tmpwidth-2);
+            wprintw(wincustom,"\n  height  < %d >\n",tmpheight-2);
+            box(wincustom,0,0);
+            key=wgetch(wincustom);
+            if(key==KEY_LEFT && tmpheight>5){
+                tmpheight=tmpheight-2;
+            }
+            else if(key==KEY_RIGHT && tmpheight<101){
+                tmpheight=tmpheight+2;
+            }
+            else if(key=='q'){
+                return TRUE;
+            }
         }
     }
-
-    //limiter le nombre de protection (*height) qui ne servent à rien
-    key=-1;
-
-    while(key!='\n'){
-        werase(wincustom);
-        wprintw(wincustom,"\n  width  < %d >",(*width)-2);
-        wprintw(wincustom,"\n  height  < %d >\n",(*height)-2);
-        box(wincustom,0,0);
-        key=wgetch(wincustom);
-        if(key==KEY_LEFT && (*height)>5){
-            (*height)=(*height)-2;
+    if(isSpeed==TRUE){
+        key=-1;
+        while(key!='\n'){
+            werase(wincustom);
+            wprintw(wincustom,"\n  speed  < %.0f >\n",speedselector);
+            box(wincustom,0,0);
+            key=wgetch(wincustom);
+            if(key==KEY_LEFT && speedselector>1){
+                speedselector=speedselector-1;
+            }
+            else if(key==KEY_RIGHT && speedselector<50){
+                speedselector=speedselector+1;
+            }
+            else if(key=='q'){
+                return TRUE;
+            }
         }
-        else if(key==KEY_RIGHT && (*height)<101){
-            (*height)=(*height)+2;
-        }
-        else if(key=='q'){
-            return TRUE;
-        }
+        (*width)=tmpwidth;
+        (*height)=tmpheight;
+        (*speed)= 0.1 + (50 - speedselector) * 0.1;//0.1: vitesse minimale, 50: plus grand int possible pour l'utilisateur, 0.2: pas entre chaque intervalle
+        //permet de convertir un int en un intervalle entre deux frame pour determiner la vitesse du serpent
+        //en fonction de speedselector compris entre 1 et 50, cela va donner un float interval entre 0.1 et 9.9 avec un pas de 0.2
     }
-    delwin(wincustom); //pour la prochaine fois: mixer les deux fct daffichage et de sous menu, avec des variables booléenes pour savoir si oui ou non on affiche les sous menu, + on 
+    
+    delwin(wincustom); 
     return FALSE;
 }
-//+repostionne correctement les mots
 
 void menu(void){
     initscr();
@@ -312,6 +340,7 @@ void menu(void){
         if(fleche=='\n'){
             if(pos==4 && itstart==0){
                 int exit=FALSE;
+                int isSpeed=FALSE,isSize=FALSE;
                 switch(itspeed){
                     case 0:
                         speed=2.5;
@@ -321,6 +350,9 @@ void menu(void){
                     break;
                     case 2:
                         speed=1;
+                    break;
+                    case 3:
+                        isSpeed=TRUE;
                     break;
                 }
                 switch(itsize){
@@ -337,16 +369,21 @@ void menu(void){
                         largeur=41;
                     break;
                     case 3:
-                        exit=customMenuSize(&largeur,&hauteur,&speed,itcolor);
+                        isSize=TRUE;
                     break;
+                }
+                if(isSize==TRUE||isSpeed==TRUE){
+                    exit=customMenuSize(isSize,isSpeed,&largeur,&hauteur,&speed,itcolor);
                 }
                 if(exit==FALSE){
                     attron(COLOR_PAIR(itcolor));
                     score=lancerPartie(largeur,hauteur,speed);
+                    flushinp();//efface le buffer des touches préssés lors de la partie, pour ne pas influencer l'affichage du menu 
                     attroff(COLOR_PAIR(itcolor));
                     clear();
                     refresh();
                 }
+                
                 
                 // printf("votre taille finale: %d\n",score);
                 // if(score==(largeur-2)*(hauteur-2)){
