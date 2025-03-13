@@ -18,7 +18,6 @@
 #define TAILLEY 19//deux nombres impairs pour que le serpent apparaisse au centre
 #define INTERVALLE 1.3//en dixième de seconde
 
-
 /**
  * @struct Tab2
  * @brief coordonnées d'une case du tableau à double entrée plateau
@@ -84,7 +83,7 @@ void majPlateau(char **plateau,int largeur, int hauteur,Tab2 corps[],Tab2 tete,i
  */
 void testCollisions(char **plateau,int largeur, int hauteur,Tab2 tete,int *surPomme,int *collision);
 
-int lancerPartie(int largeur, int hauteur,int vitesse);
+int lancerPartie(int largeur, int hauteur,float vitesse);
 
 char** allouerPlateau(int hauteur, int largeur);
 
