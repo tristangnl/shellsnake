@@ -8,11 +8,11 @@
 //mettre tout en francais ou tout en anglais
 //ajouter nbPomme?
 //ameliorer bordures?
-//plus ajouter commandes sur le menu?//sur droite quand on va sur le start par exemple
-//tester si les couleurs sont dispo pour le shell avant de lancer OK
 //ajouter dans readme qu'il faut compiler avec -lncurses
 //ajouter dans readme daller dans trgenouelr/public/ShellSnake / ou que le script est disponible dans mon home public/ShellSnake à l'iut
 //ajouter touche espace en plus de enter
+
+
 
 int lancerPartie(int largeur, int hauteur,float vitesse){
     //initialisation plateau
@@ -221,12 +221,12 @@ int customMenuSize(int isSize,int isSpeed,int *width,int *height,float *speed,in
                 return TRUE;
             }
         }
-        (*width)=tmpwidth;
-        (*height)=tmpheight;
-        (*speed)= 0.1 + (50 - speedselector) * 0.1;//0.1: vitesse minimale, 50: plus grand int possible pour l'utilisateur, 0.2: pas entre chaque intervalle
+    }
+    (*width)=tmpwidth;
+    (*height)=tmpheight;
+    (*speed)= 0.1 + (50 - speedselector) * 0.1;//0.1: vitesse minimale, 50: plus grand int possible pour l'utilisateur, 0.2: pas entre chaque intervalle
         //permet de convertir un int en un intervalle entre deux frame pour determiner la vitesse du serpent
         //en fonction de speedselector compris entre 1 et 50, cela va donner un float interval entre 0.1 et 9.9 avec un pas de 0.2
-    }
     
     delwin(wincustom); 
     return FALSE;
