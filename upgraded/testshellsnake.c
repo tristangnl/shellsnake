@@ -3,11 +3,9 @@
 
 //faire type enum plutot pour vitesse et hauteur et largeur
 //file bestscore
-//afficher nom du jeu sur menu
-//ajouter option personnalisé pour choisir une taille ou vitesse personnalisé saisie controlée en x et y pour la taille
 //mettre tout en francais ou tout en anglais
 //ajouter nbPomme?
-//ameliorer bordures?
+//ameliorer bordures?mhhh NON
 //ajouter dans readme qu'il faut compiler avec -lncurses
 //ajouter dans readme daller dans trgenouelr/public/ShellSnake / ou que le script est disponible dans mon home public/ShellSnake à l'iut
 //ajouter touche espace en plus de enter
@@ -170,7 +168,12 @@ int customMenuSize(int isSize,int isSpeed,int *width,int *height,float *speed,in
     if(isSize==TRUE){
         while(key!='\n'){
             werase(wincustom);
-            wprintw(wincustom,"\n  width  < %d >\n",tmpwidth-2);
+            if(tmpwidth-2<10){
+                mvwprintw(wincustom,1,2,"width   < %d  >",tmpwidth-2);
+            }
+            else{
+                mvwprintw(wincustom,1,2,"width   < %d >",tmpwidth-2);
+            }
             box(wincustom,0,0);
             key=wgetch(wincustom);
             if(key==KEY_LEFT && tmpwidth>5){
@@ -183,14 +186,22 @@ int customMenuSize(int isSize,int isSpeed,int *width,int *height,float *speed,in
                 return TRUE;
             }
         }
-
-        //limiter le nombre de protection (*height) qui ne servent à rien
         key=-1;
-
         while(key!='\n'){
             werase(wincustom);
-            wprintw(wincustom,"\n  width  < %d >",tmpwidth-2);
-            wprintw(wincustom,"\n  height  < %d >\n",tmpheight-2);
+            if(tmpwidth-2<10){
+                mvwprintw(wincustom,1,2,"width   < %d  >",tmpwidth-2);
+            }
+            else{
+                mvwprintw(wincustom,1,2,"width   < %d >",tmpwidth-2);
+            }
+            if(tmpheight-2<10){
+                mvwprintw(wincustom,2,2,"height  < %d  >",tmpheight-2);
+            }
+            else{
+                mvwprintw(wincustom,2,2,"height  < %d >",tmpheight-2);
+
+            }
             box(wincustom,0,0);
             key=wgetch(wincustom);
             if(key==KEY_LEFT && tmpheight>5){
@@ -208,7 +219,26 @@ int customMenuSize(int isSize,int isSpeed,int *width,int *height,float *speed,in
         key=-1;
         while(key!='\n'){
             werase(wincustom);
-            wprintw(wincustom,"\n  speed  < %.0f >\n",speedselector);
+            if(speedselector<10){
+                mvwprintw(wincustom,3,2,"speed   < %.0f  >",speedselector);
+            }
+            else{
+                mvwprintw(wincustom,3,2,"speed   < %.0f >",speedselector);
+            }
+            if(isSize==TRUE){
+                if(tmpwidth-2<10){
+                    mvwprintw(wincustom,1,2,"width   < %d  >",tmpwidth-2);
+                }
+                else{
+                    mvwprintw(wincustom,1,2,"width   < %d >",tmpwidth-2);
+                }
+                if(tmpheight-2<10){
+                    mvwprintw(wincustom,2,2,"height  < %d  >",tmpheight-2);
+                }
+                else{
+                    mvwprintw(wincustom,2,2,"height  < %d >",tmpheight-2);
+                }
+            }
             box(wincustom,0,0);
             key=wgetch(wincustom);
             if(key==KEY_LEFT && speedselector>1){
