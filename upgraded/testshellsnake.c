@@ -166,7 +166,7 @@ int customMenuSize(int isSize,int isSpeed,int *width,int *height,float *speed,in
     float speedselector=((0.1-(*speed))/0.1)+50;
     int key=-1;
     if(isSize==TRUE){
-        while(key!='\n'){
+        while(key!='\n' && key!=' '){
             werase(wincustom);
             if(tmpwidth-2<10){
                 mvwprintw(wincustom,1,2,"width   < %d  >",tmpwidth-2);
@@ -187,7 +187,7 @@ int customMenuSize(int isSize,int isSpeed,int *width,int *height,float *speed,in
             }
         }
         key=-1;
-        while(key!='\n'){
+        while(key!='\n' && key!=' '){
             werase(wincustom);
             if(tmpwidth-2<10){
                 mvwprintw(wincustom,1,2,"width   < %d  >",tmpwidth-2);
@@ -217,7 +217,7 @@ int customMenuSize(int isSize,int isSpeed,int *width,int *height,float *speed,in
     }
     if(isSpeed==TRUE){
         key=-1;
-        while(key!='\n'){
+        while(key!='\n' && key!=' '){
             werase(wincustom);
             if(speedselector<10){
                 mvwprintw(wincustom,3,2,"speed   < %.0f  >",speedselector);
@@ -367,7 +367,7 @@ void menu(void){
         if(fleche=='q'){
             break;
         }
-        if(fleche=='\n'){
+        if(fleche=='\n' || fleche==' '){
             if(pos==4 && itstart==0){
                 int exit=FALSE;
                 int isSpeed=FALSE,isSize=FALSE;
@@ -438,7 +438,7 @@ void menu(void){
         if(itstart==1){
             wprintw(win2,"\n  controls:\t\t\tbrief:\n");
             wprintw(win2,"\n  arrows: select/move\t\tEat as many apples\n");//Eat as many apples as you can without hitting the walls or yourself
-            wprintw(win2,"  enter: accept\t\t\tas you can without\n");
+            wprintw(win2,"  enter/space: accept\t\t\tas you can without\n");
             wprintw(win2,"  q: quit/exit\t\t\tcrashing !\n");
         }
         else{
