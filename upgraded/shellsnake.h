@@ -83,7 +83,7 @@ void majPlateau(char **plateau,int largeur, int hauteur,Tab2 corps[],Tab2 tete,i
  */
 void testCollisions(char **plateau,int largeur, int hauteur,Tab2 tete,int *surPomme,int *collision);
 
-int lancerPartie(int largeur, int hauteur,float vitesse);
+int lancerPartie(int largeur, int hauteur,float vitesse,int nbPommes);
 
 char** allouerPlateau(int hauteur, int largeur);
 

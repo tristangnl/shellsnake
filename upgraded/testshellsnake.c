@@ -4,29 +4,26 @@
 //faire type enum plutot pour vitesse et hauteur et largeur
 //file bestscore
 //mettre tout en francais ou tout en anglais
-//ajouter nbPomme?
-//ameliorer bordures?mhhh NON
 //ajouter dans readme qu'il faut compiler avec -lncurses
 //ajouter dans readme daller dans trgenouelr/public/ShellSnake / ou que le script est disponible dans mon home public/ShellSnake à l'iut
-//ajouter touche espace en plus de enter
 
 
 
-int lancerPartie(int largeur, int hauteur,float vitesse){
+int lancerPartie(int largeur, int hauteur,float vitesse,int nbPommes){
     //initialisation plateau
     char **plateau;
     plateau=allouerPlateau(hauteur,largeur);
     
     //initialisation fenêtre(ncurses)
-    WINDOW *win = initscr();
-    box(win, 0, 0);  // Dessine un cadre autour de la fenêtre
+    WINDOW *winsnake = initscr();
+    box(winsnake, 0, 0);  // Dessine un cadre autour de la fenêtre
 
     //initialisation aléatoire
     srand(time(NULL));
 
     // entrées clavier
-    keypad(win, true); //active les touches spéciales (flèches)
-    nodelay(win,true);//permet de lire l'entrée du joueur en permanance
+    keypad(winsnake, true); //active les touches spéciales (flèches)
+    nodelay(winsnake,true);//permet de lire l'entrée du joueur en permanance
     curs_set(0); //masque le curseur
 
     //initialisation taille
@@ -45,16 +42,18 @@ int lancerPartie(int largeur, int hauteur,float vitesse){
     //pomme
     int tlogCellulesVides;
     int cellulesVides[(largeur-2)*(hauteur-2)][2];
-    creerTableauSansSerpent(plateau,largeur,hauteur,cellulesVides,&tlogCellulesVides);
-
-    placerPomme(plateau,largeur,hauteur,cellulesVides,tlogCellulesVides);
-    
+    for(int itPommes=1;itPommes<=nbPommes;itPommes++){
+        creerTableauSansSerpent(plateau,largeur,hauteur,cellulesVides,&tlogCellulesVides);
+        if(tlogCellulesVides>0){
+                placerPomme(plateau,largeur,hauteur,cellulesVides,tlogCellulesVides);
+            }
+    }
     //initialisation
-    int surPomme=0,collision=0;
+    int surPomme,collision;
 
     //gameloop
     while(true){
-        int fleche = wgetch(win);
+        int fleche = wgetch(winsnake);
         if (fleche == KEY_LEFT){
             if(dir.x == 1) continue;
             dir.x =-1;
@@ -79,23 +78,25 @@ int lancerPartie(int largeur, int hauteur,float vitesse){
             break;
         }
         
-        surPomme=0;
-        collision=0;
+        surPomme=FALSE;
+
         tete=deplacementTete(plateau,largeur,hauteur,tete,dir);
         testCollisions(plateau,largeur,hauteur,tete,&surPomme,&collision);
 
         majPlateau(plateau,largeur,hauteur,corps,tete,taille,dir);
         
-        if(surPomme==1){
+        if(surPomme==TRUE){
             creerTableauSansSerpent(plateau,largeur,hauteur,cellulesVides,&tlogCellulesVides);
-            placerPomme(plateau,largeur,hauteur,cellulesVides,tlogCellulesVides);
+            if(tlogCellulesVides!=0){
+                placerPomme(plateau,largeur,hauteur,cellulesVides,tlogCellulesVides);
+            }
             taille++;
         }
 
         //affichage
         erase();
         affichPlateau(plateau,largeur,hauteur);
-        wprintw(win,"\tsize: %d",taille);
+        wprintw(winsnake,"\tsize: %d",taille);
         refresh();//sinon le plateau n'a pas le temps de s'afficher complétement et le usleep() s'active
         if(collision==1){
             usleep(800000);
@@ -115,7 +116,7 @@ int lancerPartie(int largeur, int hauteur,float vitesse){
     return taille;
 }
 
-void afficheMenu(WINDOW *win1,char colorArray[][8],char sizeArray[][10],char speedArray[][10],char startArray[][11],int pos,int itsize,int itspeed,int itcolor,int itstart){
+void afficheMenu(WINDOW *win1,WINDOW *win2,char colorArray[][10],char sizeArray[][10],char speedArray[][10],int pos,int itsize,int itspeed,int itcolor,int nbPommes){
     mvwprintw(win1,2,3, "  /$$$$$$  /$$                 /$$ /$$     /ooooooooo                      /oo                \n");
     mvwprintw(win1,3,3, " /$$__  $$| $$                | $$| $$    /oo_____  oo                    | oo                \n");
     mvwprintw(win1,4,3, "| $$  \\__/| $$$$$$$   /$$$$$$ | $$| $$   | oo     \\__/ /ooooooo   /oooooo | oo   /oo  /oooooo \n");
@@ -127,29 +128,53 @@ void afficheMenu(WINDOW *win1,char colorArray[][8],char sizeArray[][10],char spe
     switch(pos){
         case 1: 
             mvwprintw(win1,12,3,"color  <%s>",colorArray[itcolor]);
-            mvwprintw(win1,13,3,"size   %s",sizeArray[itsize]);
-            mvwprintw(win1,14,3,"speed  %s",speedArray[itspeed]);
-            mvwprintw(win1,15,3,"\t %s",startArray[itstart]);
+            mvwprintw(win1,13,3,"size    %s",sizeArray[itsize]);
+            mvwprintw(win1,14,3,"speed   %s",speedArray[itspeed]);
+            mvwprintw(win1,15,3,"apples      %d",nbPommes);
+            mvwprintw(win1,16,3,"\t start");
         break;
         case 2:
             mvwprintw(win1,12,3,"color   %s",colorArray[itcolor]);
-            mvwprintw(win1,13,3,"size  <%s>",sizeArray[itsize]);
-            mvwprintw(win1,14,3,"speed  %s",speedArray[itspeed]);
-            mvwprintw(win1,15,3,"\t %s ",startArray[itstart]);
+            mvwprintw(win1,13,3,"size   <%s>",sizeArray[itsize]);
+            mvwprintw(win1,14,3,"speed   %s",speedArray[itspeed]);
+            mvwprintw(win1,15,3,"apples      %d",nbPommes);
+            mvwprintw(win1,16,3,"\t start");
             break;
         case 3:
             mvwprintw(win1,12,3,"color   %s",colorArray[itcolor]);
-            mvwprintw(win1,13,3,"size   %s",sizeArray[itsize]);
-            mvwprintw(win1,14,3,"speed <%s>",speedArray[itspeed]);
-            mvwprintw(win1,15,3,"\t %s",startArray[itstart]);
+            mvwprintw(win1,13,3,"size    %s",sizeArray[itsize]);
+            mvwprintw(win1,14,3,"speed  <%s>",speedArray[itspeed]);
+            mvwprintw(win1,15,3,"apples      %d",nbPommes);
+            mvwprintw(win1,16,3,"\t start");
             break;
         case 4:
             mvwprintw(win1,12,3,"color   %s",colorArray[itcolor]);
-            mvwprintw(win1,13,3,"size   %s",sizeArray[itsize]);
-            mvwprintw(win1,14,3,"speed  %s",speedArray[itspeed]);
-            mvwprintw(win1,15,3,"      <%s>",startArray[itstart]);
+            mvwprintw(win1,13,3,"size    %s",sizeArray[itsize]);
+            mvwprintw(win1,14,3,"speed   %s",speedArray[itspeed]);
+            mvwprintw(win1,15,3,"apples <    %d    >",nbPommes);
+            mvwprintw(win1,16,3,"      start");
+            break;
+        case 5:
+            mvwprintw(win1,12,3,"color   %s",colorArray[itcolor]);
+            mvwprintw(win1,13,3,"size    %s",sizeArray[itsize]);
+            mvwprintw(win1,14,3,"speed   %s",speedArray[itspeed]);
+            mvwprintw(win1,15,3,"apples      %d",nbPommes);
+            mvwprintw(win1,16,3,"   <  start  >");
             break;
     }
+    box(win1, 0, 0);
+    wprintw(win2,"\n  controls:\t\t\tbrief:\n");
+    wprintw(win2,"\n  arrows: select/move\t\tEat as many apples\n");//Eat as many apples as you can without hitting the walls or yourself
+    wprintw(win2,"  enter/space: accept\t\tas you can without\n");
+    wprintw(win2,"  q: quit/exit\t\t\tcrashing !\n");
+    box(win2, 0, 0);
+    if(itcolor!=0){
+        wattroff(win2,COLOR_PAIR(itcolor));
+        wattroff(win1,COLOR_PAIR(itcolor));
+
+    }
+    wrefresh(win1);
+    wrefresh(win2);
 }
 
 
@@ -179,7 +204,7 @@ int customMenuSize(int isSize,int isSpeed,int *width,int *height,float *speed,in
             if(key==KEY_LEFT && tmpwidth>5){
                 tmpwidth=tmpwidth-2;
             }
-            else if(key==KEY_RIGHT && tmpwidth<101){
+            else if(key==KEY_RIGHT && tmpwidth<51){
                 tmpwidth=tmpwidth+2;
             }
             else if(key=='q'){
@@ -207,7 +232,7 @@ int customMenuSize(int isSize,int isSpeed,int *width,int *height,float *speed,in
             if(key==KEY_LEFT && tmpheight>5){
                 tmpheight=tmpheight-2;
             }
-            else if(key==KEY_RIGHT && tmpheight<101){
+            else if(key==KEY_RIGHT && tmpheight<51){
                 tmpheight=tmpheight+2;
             }
             else if(key=='q'){
@@ -244,7 +269,7 @@ int customMenuSize(int isSize,int isSpeed,int *width,int *height,float *speed,in
             if(key==KEY_LEFT && speedselector>1){
                 speedselector=speedselector-1;
             }
-            else if(key==KEY_RIGHT && speedselector<50){
+            else if(key==KEY_RIGHT && speedselector<49){
                 speedselector=speedselector+1;
             }
             else if(key=='q'){
@@ -296,22 +321,22 @@ void menu(void){
     keypad(win1, true); //active les touches spéciales (flèches)
     char speedArray[4][10]={" slow    "," medium  "," fast    "," custom  "};
     char sizeArray[4][10]={" small   "," medium  "," large   "," custom  "};
-    char colorArray[9][8]={"default","white","red","green","yellow","blue","magenta","cyan","black"};
-    char startArray[2][11]={" start "," controls "};
-    int itspeed=1,itsize=1,itcolor=0,itstart=0;
-    afficheMenu(win1,colorArray,sizeArray,speedArray,startArray,pos,itsize,itspeed,itcolor,itstart);
-    box(win1, 0, 0);
+    char colorArray[9][10]={" default "," white   "," red     "," green   "," yellow  "," blue    "," magenta "," cyan    "," black   "};
+    int itspeed=1,itsize=1,itcolor=0;
+    int nbPommes=1;
+    afficheMenu(win1,win2,colorArray,sizeArray,speedArray,pos,itsize,itspeed,itcolor,nbPommes);
+    
     int fleche = wgetch(win1);
     
     while(true){
         if (fleche == KEY_LEFT){
             if(pos==4){
-                if(itstart==0){
-                    itstart=1;
+                if(nbPommes==1){
+                    nbPommes=9;
                 }
-                else itstart--;
+                else nbPommes--;
             }
-            if(pos==3){
+            else if(pos==3){
                 if(itspeed==0){
                     itspeed=3;
                 }
@@ -332,12 +357,12 @@ void menu(void){
         }
         if (fleche == KEY_RIGHT){
             if(pos==4){
-                if(itstart==1){
-                    itstart=0;
+                if(nbPommes==9){
+                    nbPommes=1;
                 }
-                else itstart++;
+                else nbPommes++;
             }
-            if(pos==3){
+            else if(pos==3){
                 if(itspeed==3){
                     itspeed=0;
                 }
@@ -357,18 +382,18 @@ void menu(void){
             }
         }
         if (fleche == KEY_DOWN){
-            if(pos==4) pos=1;
+            if(pos==5) pos=1;
             else pos++;
         }   
         if (fleche == KEY_UP){
-            if(pos==1) pos=4;
+            if(pos==1) pos=5;
             else pos--;
         }
         if(fleche=='q'){
             break;
         }
         if(fleche=='\n' || fleche==' '){
-            if(pos==4 && itstart==0){
+            if(pos==5){
                 int exit=FALSE;
                 int isSpeed=FALSE,isSize=FALSE;
                 switch(itspeed){
@@ -407,7 +432,7 @@ void menu(void){
                 }
                 if(exit==FALSE){
                     attron(COLOR_PAIR(itcolor));
-                    score=lancerPartie(largeur,hauteur,speed);
+                    score=lancerPartie(largeur,hauteur,speed,nbPommes);
                     flushinp();//efface le buffer des touches préssés lors de la partie, pour ne pas influencer l'affichage du menu 
                     attroff(COLOR_PAIR(itcolor));
                     clear();
@@ -420,7 +445,7 @@ void menu(void){
                 //     printf("incroyable, vous avez mangé toutes les pommes!\n");
                 // }
             }
-            else if(pos!=4){
+            else if(pos!=5){
                 pos++;
             }
         }
@@ -433,25 +458,7 @@ void menu(void){
             wattron(win2,COLOR_PAIR(itcolor));
 
         }
-        afficheMenu(win1,colorArray,sizeArray,speedArray,startArray,pos,itsize,itspeed,itcolor,itstart);
-        box(win1, 0, 0);
-        if(itstart==1){
-            wprintw(win2,"\n  controls:\t\t\tbrief:\n");
-            wprintw(win2,"\n  arrows: select/move\t\tEat as many apples\n");//Eat as many apples as you can without hitting the walls or yourself
-            wprintw(win2,"  enter/space: accept\t\t\tas you can without\n");
-            wprintw(win2,"  q: quit/exit\t\t\tcrashing !\n");
-        }
-        else{
-            wprintw(win2,"\n  highscore:\n");
-        }
-        box(win2, 0, 0);
-        if(itcolor!=0){
-            wattroff(win2,COLOR_PAIR(itcolor));
-            wattroff(win1,COLOR_PAIR(itcolor));
-
-        }
-        wrefresh(win1);
-        wrefresh(win2);
+        afficheMenu(win1,win2,colorArray,sizeArray,speedArray,pos,itsize,itspeed,itcolor,nbPommes);
         fleche = wgetch(win1);
     }
     endwin();

@@ -31,7 +31,7 @@ void creerTableauSansSerpent(char **plateau,int largeur, int hauteur,int cellule
     *tlogCellulesVides=0;
     for (i=1;i<hauteur-1;i++){
         for(j=1;j<largeur-1;j++){
-            if(plateau[i][j]=='<' || plateau[i][j]=='>' || plateau[i][j]=='^' || plateau[i][j]=='v' || plateau[i][j]=='o'){
+            if(plateau[i][j]=='<' || plateau[i][j]=='>' || plateau[i][j]=='^' || plateau[i][j]=='v' || plateau[i][j]=='o'||plateau[i][j]=='@'){
                 continue;
             }
             else{
