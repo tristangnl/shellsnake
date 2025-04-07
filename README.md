@@ -10,7 +10,7 @@ see html/index.html for documentation
 
 There are two versions:
 
-- A **minimalistic** one, which is highly customizable -> **📁 Minimalistic**  
+- A **minimalistic** one, which is highly customizable -> 📁 [**Minimalistic**](https://github.com/tristangnl/shellsnake/tree/main/minimalistic)
 - The **second** one, where I've added some features and styles -> **📁 Upgraded**
 
 ## Look
