@@ -1,8 +1,5 @@
 #include "shellsnake.h"
 
-
-//faire type enum plutot pour vitesse et hauteur et largeur
-//file bestscore
 //mettre tout en francais ou tout en anglais
 //ajouter dans readme qu'il faut compiler avec -lncurses
 //ajouter dans readme daller dans trgenouelr/public/ShellSnake / ou que le script est disponible dans mon home public/ShellSnake à l'iut
@@ -45,8 +42,8 @@ int lancerPartie(int largeur, int hauteur,float vitesse,int nbPommes){
     for(int itPommes=1;itPommes<=nbPommes;itPommes++){
         creerTableauSansSerpent(plateau,largeur,hauteur,cellulesVides,&tlogCellulesVides);
         if(tlogCellulesVides>0){
-                placerPomme(plateau,largeur,hauteur,cellulesVides,tlogCellulesVides);
-            }
+            placerPomme(plateau,largeur,hauteur,cellulesVides,tlogCellulesVides);
+        }
     }
     //initialisation
     int surPomme,collision;
@@ -83,15 +80,28 @@ int lancerPartie(int largeur, int hauteur,float vitesse,int nbPommes){
         tete=deplacementTete(plateau,largeur,hauteur,tete,dir);
         testCollisions(plateau,largeur,hauteur,tete,&surPomme,&collision);
 
-        majPlateau(plateau,largeur,hauteur,corps,tete,taille,dir);
+        // majPlateau(plateau,largeur,hauteur,corps,tete,taille,dir);
+        
+        // if(surPomme==TRUE){
+        //     creerTableauSansSerpent(plateau,largeur,hauteur,cellulesVides,&tlogCellulesVides);
+        //     if(tlogCellulesVides!=0){
+        //         placerPomme(plateau,largeur,hauteur,cellulesVides,tlogCellulesVides);
+        //     }
+        //     taille++;
+        // }
+
+
         
         if(surPomme==TRUE){
+            taille++;
+            majPlateau(plateau,largeur,hauteur,corps,tete,taille,dir);
             creerTableauSansSerpent(plateau,largeur,hauteur,cellulesVides,&tlogCellulesVides);
             if(tlogCellulesVides!=0){
                 placerPomme(plateau,largeur,hauteur,cellulesVides,tlogCellulesVides);
             }
-            taille++;
         }
+        else majPlateau(plateau,largeur,hauteur,corps,tete,taille,dir);
+
 
         //affichage
         erase();
@@ -116,7 +126,14 @@ int lancerPartie(int largeur, int hauteur,float vitesse,int nbPommes){
     return taille;
 }
 
-void afficheMenu(WINDOW *win1,WINDOW *win2,char colorArray[][10],char sizeArray[][10],char speedArray[][10],int pos,int itsize,int itspeed,int itcolor,int nbPommes){
+void afficheMenu(WINDOW *win1,WINDOW *win2,char colorArray[][10],char sizeArray[][10],char speedArray[][10],int pos,int itsize,int itspeed,int itcolor,int nbPommes,int score){
+    werase(win1);
+    werase(win2);
+    if(itcolor!=0){
+            wattron(win1,COLOR_PAIR(itcolor));
+            wattron(win2,COLOR_PAIR(itcolor));
+
+    }
     mvwprintw(win1,2,3, "  /$$$$$$  /$$                 /$$ /$$     /ooooooooo                      /oo                \n");
     mvwprintw(win1,3,3, " /$$__  $$| $$                | $$| $$    /oo_____  oo                    | oo                \n");
     mvwprintw(win1,4,3, "| $$  \\__/| $$$$$$$   /$$$$$$ | $$| $$   | oo     \\__/ /ooooooo   /oooooo | oo   /oo  /oooooo \n");
@@ -168,6 +185,9 @@ void afficheMenu(WINDOW *win1,WINDOW *win2,char colorArray[][10],char sizeArray[
     wprintw(win2,"  enter/space: accept\t\tas you can without\n");
     wprintw(win2,"  q: quit/exit\t\t\tcrashing !\n");
     box(win2, 0, 0);
+    if(score!=-1){
+            mvwprintw(win1,17,4,"final size: %d",score);
+    }
     if(itcolor!=0){
         wattroff(win2,COLOR_PAIR(itcolor));
         wattroff(win1,COLOR_PAIR(itcolor));
@@ -313,7 +333,7 @@ void menu(void){
     int hauteur=19,largeur=31;
     float speed=1.5;
 
-    int pos=4,score;
+    int pos=4,score=-1;
     WINDOW *win1= newwin(20,100,0,0);
     WINDOW *win2= newwin(8,58,11,40);
 
@@ -324,7 +344,7 @@ void menu(void){
     char colorArray[9][10]={" default "," white   "," red     "," green   "," yellow  "," blue    "," magenta "," cyan    "," black   "};
     int itspeed=1,itsize=1,itcolor=0;
     int nbPommes=1;
-    afficheMenu(win1,win2,colorArray,sizeArray,speedArray,pos,itsize,itspeed,itcolor,nbPommes);
+    afficheMenu(win1,win2,colorArray,sizeArray,speedArray,pos,itsize,itspeed,itcolor,nbPommes,score);
     
     int fleche = wgetch(win1);
     
@@ -355,7 +375,7 @@ void menu(void){
                 else itcolor--;
             }
         }
-        if (fleche == KEY_RIGHT){
+        else if (fleche == KEY_RIGHT){
             if(pos==4){
                 if(nbPommes==9){
                     nbPommes=1;
@@ -381,18 +401,18 @@ void menu(void){
                 else itcolor++;
             }
         }
-        if (fleche == KEY_DOWN){
+        else if (fleche == KEY_DOWN){
             if(pos==5) pos=1;
             else pos++;
         }   
-        if (fleche == KEY_UP){
+        else if (fleche == KEY_UP){
             if(pos==1) pos=5;
             else pos--;
         }
-        if(fleche=='q'){
+        else if(fleche=='q'){
             break;
         }
-        if(fleche=='\n' || fleche==' '){
+        else if(fleche=='\n' || fleche==' '){
             if(pos==5){
                 int exit=FALSE;
                 int isSpeed=FALSE,isSize=FALSE;
@@ -438,12 +458,6 @@ void menu(void){
                     clear();
                     refresh();
                 }
-                
-                
-                // printf("votre taille finale: %d\n",score);
-                // if(score==(largeur-2)*(hauteur-2)){
-                //     printf("incroyable, vous avez mangé toutes les pommes!\n");
-                // }
             }
             else if(pos!=5){
                 pos++;
@@ -451,27 +465,17 @@ void menu(void){
         }
         
         //affichage
-        werase(win1);
-        werase(win2);
-        if(itcolor!=0){
-            wattron(win1,COLOR_PAIR(itcolor));
-            wattron(win2,COLOR_PAIR(itcolor));
 
-        }
-        afficheMenu(win1,win2,colorArray,sizeArray,speedArray,pos,itsize,itspeed,itcolor,nbPommes);
+        afficheMenu(win1,win2,colorArray,sizeArray,speedArray,pos,itsize,itspeed,itcolor,nbPommes,score);
+
         fleche = wgetch(win1);
+
     }
     endwin();
 
 }
 
 int main(void){
-    // int score,largeur=4,hauteur=5;//minimum 5 dans chaque
-    // score=lancerPartie(largeur,hauteur,3);
-    // printf("votre taille finale: %d\n",score);
-    // if(score==(largeur-2)*(hauteur-2)){
-    //     printf("incroyable, vous avez mangé toutes les pommes!\n");
-    // }
     menu();
     return 0;
 }
