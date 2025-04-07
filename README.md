@@ -45,3 +45,12 @@ X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X
 
 ### Installation
 clone this repo and run ```./ShellSnake``` in the terminal on linux to play
+
+### Compilation
+with gcc:
+
+```gcc -Wall shellsnake.c testshellsnake.c -o ShellSnake -lncurses```
+  
+> [!IMPORTANT]  
+> Don't forget to link the ncurses library using ```-lncurses```.
+
