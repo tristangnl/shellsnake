@@ -40,8 +40,19 @@ X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X
 
 ### Commands
 
-- **Arrows**: Move
-- **Escape**: Exit
+* minimalistic :
+  * **Arrows** : Move
+  * **escape** : Exit
+
+* upgraded :
+  * **Arrows** : Select / Move
+  * **q** : Return / Exit
+  * **space / Enter** : Choose
+
+> [!TIP]  
+> You can adjust the shell font size using `Ctrl` + `+` or `Ctrl` + `-`.
+
+
 
 ### Installation
 clone this repo and run ```./ShellSnake``` in the terminal on linux to play
