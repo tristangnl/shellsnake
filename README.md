@@ -38,7 +38,7 @@ X                                                           X
 X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X  
 ```
 
-### Commands
+### Controls
 
 * minimalistic :
   * **Arrows** : Move
@@ -63,5 +63,6 @@ with gcc:
 ```gcc -Wall shellsnake.c testshellsnake.c -o ShellSnake -lncurses```
   
 > [!IMPORTANT]  
-> Don't forget to link the ncurses library using ```-lncurses```.
+> Don't forget to link the ncurses library using ```-lncurses```.  
+> You must have the ncurses packages installed first.
 
