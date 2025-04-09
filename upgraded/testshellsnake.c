@@ -1,11 +1,5 @@
 #include "shellsnake.h"
 
-//mettre tout en francais ou tout en anglais
-//ajouter dans readme qu'il faut compiler avec -lncurses
-//ajouter dans readme daller dans trgenouelr/public/ShellSnake / ou que le script est disponible dans mon home public/ShellSnake à l'iut
-
-
-
 int lancerPartie(int largeur, int hauteur,float vitesse,int nbPommes){
     //initialisation plateau
     char **plateau;
@@ -79,18 +73,6 @@ int lancerPartie(int largeur, int hauteur,float vitesse,int nbPommes){
 
         tete=deplacementTete(plateau,largeur,hauteur,tete,dir);
         testCollisions(plateau,largeur,hauteur,tete,&surPomme,&collision);
-
-        // majPlateau(plateau,largeur,hauteur,corps,tete,taille,dir);
-        
-        // if(surPomme==TRUE){
-        //     creerTableauSansSerpent(plateau,largeur,hauteur,cellulesVides,&tlogCellulesVides);
-        //     if(tlogCellulesVides!=0){
-        //         placerPomme(plateau,largeur,hauteur,cellulesVides,tlogCellulesVides);
-        //     }
-        //     taille++;
-        // }
-
-
         
         if(surPomme==TRUE){
             taille++;
@@ -108,6 +90,7 @@ int lancerPartie(int largeur, int hauteur,float vitesse,int nbPommes){
         affichPlateau(plateau,largeur,hauteur);
         wprintw(winsnake,"\tsize: %d",taille);
         refresh();//sinon le plateau n'a pas le temps de s'afficher complétement et le usleep() s'active
+        //condition de partie perdue
         if(collision==1){
             usleep(800000);
             break;
@@ -126,106 +109,34 @@ int lancerPartie(int largeur, int hauteur,float vitesse,int nbPommes){
     return taille;
 }
 
-void afficheMenu(WINDOW *win1,WINDOW *win2,char colorArray[][10],char sizeArray[][10],char speedArray[][10],int pos,int itsize,int itspeed,int itcolor,int nbPommes,int score){
-    werase(win1);
-    werase(win2);
-    if(itcolor!=0){
-            wattron(win1,COLOR_PAIR(itcolor));
-            wattron(win2,COLOR_PAIR(itcolor));
 
-    }
-    mvwprintw(win1,2,3, "  /$$$$$$  /$$                 /$$ /$$     /ooooooooo                      /oo                \n");
-    mvwprintw(win1,3,3, " /$$__  $$| $$                | $$| $$    /oo_____  oo                    | oo                \n");
-    mvwprintw(win1,4,3, "| $$  \\__/| $$$$$$$   /$$$$$$ | $$| $$   | oo     \\__/ /ooooooo   /oooooo | oo   /oo  /oooooo \n");
-    mvwprintw(win1,5,3, "|  $$$$$$ | $$__  $$ /$$__  $$| $$| $$   |  oooooo  | | oo__  oo |____  oo| oo  /oo/ /oo__  oo\n");
-    mvwprintw(win1,6,3, " \\____  $$| $$  \\ $$| $$$$$$$$| $$| $$  /\\\\____  oo ^ | oo  \\ oo  /ooooooo| oooooo/ | oooooooo\n");
-    mvwprintw(win1,7,3, " /$$  \\ $$| $$  | $$| $$_____/| $$| $$ /oo     \\ oo   | oo  | oo /oo__  oo| oo_  oo | oo_____/\n");
-    mvwprintw(win1,8,3, "|  $$$$$$/| $$  | $$|  $$$$$$$| $$| $$|  ooooooooo/   | oo  | oo|  ooooooo| oo \\  oo|  oooooooo\n");
-    mvwprintw(win1,9,3, " \\______/ |__/  |__/ \\_______/|__/|__/ \\_________/    |__/  |__/ \\_______/|__/  \\__/ \\_______/\n");
-    switch(pos){
-        case 1: 
-            mvwprintw(win1,12,3,"color  <%s>",colorArray[itcolor]);
-            mvwprintw(win1,13,3,"size    %s",sizeArray[itsize]);
-            mvwprintw(win1,14,3,"speed   %s",speedArray[itspeed]);
-            mvwprintw(win1,15,3,"apples      %d",nbPommes);
-            mvwprintw(win1,16,3,"\t start");
-        break;
-        case 2:
-            mvwprintw(win1,12,3,"color   %s",colorArray[itcolor]);
-            mvwprintw(win1,13,3,"size   <%s>",sizeArray[itsize]);
-            mvwprintw(win1,14,3,"speed   %s",speedArray[itspeed]);
-            mvwprintw(win1,15,3,"apples      %d",nbPommes);
-            mvwprintw(win1,16,3,"\t start");
-            break;
-        case 3:
-            mvwprintw(win1,12,3,"color   %s",colorArray[itcolor]);
-            mvwprintw(win1,13,3,"size    %s",sizeArray[itsize]);
-            mvwprintw(win1,14,3,"speed  <%s>",speedArray[itspeed]);
-            mvwprintw(win1,15,3,"apples      %d",nbPommes);
-            mvwprintw(win1,16,3,"\t start");
-            break;
-        case 4:
-            mvwprintw(win1,12,3,"color   %s",colorArray[itcolor]);
-            mvwprintw(win1,13,3,"size    %s",sizeArray[itsize]);
-            mvwprintw(win1,14,3,"speed   %s",speedArray[itspeed]);
-            mvwprintw(win1,15,3,"apples <    %d    >",nbPommes);
-            mvwprintw(win1,16,3,"      start");
-            break;
-        case 5:
-            mvwprintw(win1,12,3,"color   %s",colorArray[itcolor]);
-            mvwprintw(win1,13,3,"size    %s",sizeArray[itsize]);
-            mvwprintw(win1,14,3,"speed   %s",speedArray[itspeed]);
-            mvwprintw(win1,15,3,"apples      %d",nbPommes);
-            mvwprintw(win1,16,3,"   <  start  >");
-            break;
-    }
-    box(win1, 0, 0);
-    wprintw(win2,"\n  controls:\t\t\tbrief:\n");
-    wprintw(win2,"\n  arrows: select/move\t\tEat as many apples\n");//Eat as many apples as you can without hitting the walls or yourself
-    wprintw(win2,"  enter/space: accept\t\tas you can without\n");
-    wprintw(win2,"  q: quit/exit\t\t\tcrashing !\n");
-    box(win2, 0, 0);
-    if(score!=-1){
-            mvwprintw(win1,17,4,"final size: %d",score);
-    }
-    if(itcolor!=0){
-        wattroff(win2,COLOR_PAIR(itcolor));
-        wattroff(win1,COLOR_PAIR(itcolor));
-
-    }
-    wrefresh(win1);
-    wrefresh(win2);
-}
-
-
-
-int customMenuSize(int isSize,int isSpeed,int *width,int *height,float *speed,int itcolor){
+int customMenuSize(int tailleCustom,int vitesseCustom,int *largeur,int *hauteur,float *vitesse,int itColor){
     WINDOW *wincustom= newwin(8,18,11,22);
     keypad(wincustom, true);
     
-    wattron(wincustom,COLOR_PAIR(itcolor));
-    wattron(wincustom,COLOR_PAIR(itcolor));
+    wattron(wincustom,COLOR_PAIR(itColor));
+    wattron(wincustom,COLOR_PAIR(itColor));
 
 
-    int tmpwidth=(*width),tmpheight=(*height);
-    float speedselector=((0.1-(*speed))/0.1)+50;
+    int tmpLargeur=(*largeur),tmpHauteur=(*hauteur);
+    float selecteurVitesse=((0.1-(*vitesse))/0.1)+49;
     int key=-1;
-    if(isSize==TRUE){
+    if(tailleCustom==TRUE){
         while(key!='\n' && key!=' '){
             werase(wincustom);
-            if(tmpwidth-2<10){
-                mvwprintw(wincustom,1,2,"width   < %d  >",tmpwidth-2);
+            if(tmpLargeur-2<10){
+                mvwprintw(wincustom,1,2,"width   < %d  >",tmpLargeur-2);
             }
             else{
-                mvwprintw(wincustom,1,2,"width   < %d >",tmpwidth-2);
+                mvwprintw(wincustom,1,2,"width   < %d >",tmpLargeur-2);
             }
             box(wincustom,0,0);
             key=wgetch(wincustom);
-            if(key==KEY_LEFT && tmpwidth>5){
-                tmpwidth=tmpwidth-2;
+            if(key==KEY_LEFT && tmpLargeur>5){
+                tmpLargeur=tmpLargeur-2;
             }
-            else if(key==KEY_RIGHT && tmpwidth<51){
-                tmpwidth=tmpwidth+2;
+            else if(key==KEY_RIGHT && tmpLargeur<51){
+                tmpLargeur=tmpLargeur+2;
             }
             else if(key=='q'){
                 return TRUE;
@@ -234,74 +145,75 @@ int customMenuSize(int isSize,int isSpeed,int *width,int *height,float *speed,in
         key=-1;
         while(key!='\n' && key!=' '){
             werase(wincustom);
-            if(tmpwidth-2<10){
-                mvwprintw(wincustom,1,2,"width   < %d  >",tmpwidth-2);
+            if(tmpLargeur-2<10){
+                mvwprintw(wincustom,1,2,"width   < %d  >",tmpLargeur-2);
             }
             else{
-                mvwprintw(wincustom,1,2,"width   < %d >",tmpwidth-2);
+                mvwprintw(wincustom,1,2,"width   < %d >",tmpLargeur-2);
             }
-            if(tmpheight-2<10){
-                mvwprintw(wincustom,2,2,"height  < %d  >",tmpheight-2);
+            if(tmpHauteur-2<10){
+                mvwprintw(wincustom,2,2,"height  < %d  >",tmpHauteur-2);
             }
             else{
-                mvwprintw(wincustom,2,2,"height  < %d >",tmpheight-2);
+                mvwprintw(wincustom,2,2,"height  < %d >",tmpHauteur-2);
 
             }
             box(wincustom,0,0);
             key=wgetch(wincustom);
-            if(key==KEY_LEFT && tmpheight>5){
-                tmpheight=tmpheight-2;
+            if(key==KEY_LEFT && tmpHauteur>5){
+                tmpHauteur=tmpHauteur-2;
             }
-            else if(key==KEY_RIGHT && tmpheight<51){
-                tmpheight=tmpheight+2;
+            else if(key==KEY_RIGHT && tmpHauteur<51){
+                tmpHauteur=tmpHauteur+2;
             }
             else if(key=='q'){
                 return TRUE;
             }
         }
     }
-    if(isSpeed==TRUE){
+    if(vitesseCustom==TRUE){
         key=-1;
         while(key!='\n' && key!=' '){
             werase(wincustom);
-            if(speedselector<10){
-                mvwprintw(wincustom,3,2,"speed   < %.0f  >",speedselector);
+            if(selecteurVitesse<10){
+                mvwprintw(wincustom,3,2,"speed   < %.0f  >",selecteurVitesse);
             }
             else{
-                mvwprintw(wincustom,3,2,"speed   < %.0f >",speedselector);
+                mvwprintw(wincustom,3,2,"speed   < %.0f >",selecteurVitesse);
             }
-            if(isSize==TRUE){
-                if(tmpwidth-2<10){
-                    mvwprintw(wincustom,1,2,"width   < %d  >",tmpwidth-2);
+            if(tailleCustom==TRUE){
+                if(tmpLargeur-2<10){
+                    mvwprintw(wincustom,1,2,"width   < %d  >",tmpLargeur-2);
                 }
                 else{
-                    mvwprintw(wincustom,1,2,"width   < %d >",tmpwidth-2);
+                    mvwprintw(wincustom,1,2,"width   < %d >",tmpLargeur-2);
                 }
-                if(tmpheight-2<10){
-                    mvwprintw(wincustom,2,2,"height  < %d  >",tmpheight-2);
+                if(tmpHauteur-2<10){
+                    mvwprintw(wincustom,2,2,"height  < %d  >",tmpHauteur-2);
                 }
                 else{
-                    mvwprintw(wincustom,2,2,"height  < %d >",tmpheight-2);
+                    mvwprintw(wincustom,2,2,"height  < %d >",tmpHauteur-2);
                 }
             }
             box(wincustom,0,0);
             key=wgetch(wincustom);
-            if(key==KEY_LEFT && speedselector>1){
-                speedselector=speedselector-1;
+            if(key==KEY_LEFT && selecteurVitesse>1){
+                selecteurVitesse=selecteurVitesse-1;
             }
-            else if(key==KEY_RIGHT && speedselector<49){
-                speedselector=speedselector+1;
+            else if(key==KEY_RIGHT && selecteurVitesse<49){
+                selecteurVitesse=selecteurVitesse+1;
             }
             else if(key=='q'){
                 return TRUE;
             }
         }
     }
-    (*width)=tmpwidth;
-    (*height)=tmpheight;
-    (*speed)= 0.1 + (50 - speedselector) * 0.1;//0.1: vitesse minimale, 50: plus grand int possible pour l'utilisateur, 0.2: pas entre chaque intervalle
+    (*largeur)=tmpLargeur;
+    (*hauteur)=tmpHauteur;
+    (*vitesse)= 0.1 + (49 - selecteurVitesse) * 0.1;
+        //0.1: vitesse float minimale, 49: plus grand int possible pour l'utilisateur, 0.1: pas entre chaque intervalle
         //permet de convertir un int en un intervalle entre deux frame pour determiner la vitesse du serpent
-        //en fonction de speedselector compris entre 1 et 50, cela va donner un float interval entre 0.1 et 9.9 avec un pas de 0.2
+        //en fonction de selecteurVitesse compris entre 1 et 49, cela va donner un float intervalle entre 0.1 et 5 avec un pas de 0.1
     
     delwin(wincustom); 
     return FALSE;
@@ -312,9 +224,9 @@ void menu(void){
     noecho();
     curs_set(0); //masque le curseur
 
-    if (!has_colors()) {  // permet de vérifier si le terminal supporte ncurses en général
+    if (!has_colors()) {  // permet de vérifier si le terminal supporte ncurses
         endwin();
-        printf("Votre terminal ne supporte pas les couleurs et la gestion des fenêtres.\n");
+        printf("Your terminal does not support color display or window management.\n");
         exit(1);
     }
 
@@ -331,24 +243,24 @@ void menu(void){
     init_pair(8, COLOR_BLACK,-1);
 
     int hauteur=19,largeur=31;
-    float speed=1.5;
+    float vitesse=1.5;
 
-    int pos=4,score=-1;
+    int pos=5,score=-1;
     WINDOW *win1= newwin(20,100,0,0);
     WINDOW *win2= newwin(8,58,11,40);
 
 
     keypad(win1, true); //active les touches spéciales (flèches)
-    char speedArray[4][10]={" slow    "," medium  "," fast    "," custom  "};
-    char sizeArray[4][10]={" small   "," medium  "," large   "," custom  "};
-    char colorArray[9][10]={" default "," white   "," red     "," green   "," yellow  "," blue    "," magenta "," cyan    "," black   "};
-    int itspeed=1,itsize=1,itcolor=0;
+    char speedTab[4][10]={" slow    "," medium  "," fast    "," custom  "};
+    char sizeTab[4][10]={" small   "," medium  "," large   "," custom  "};
+    char colorTab[9][10]={" default "," white   "," red     "," green   "," yellow  "," blue    "," magenta "," cyan    "," black   "};
+    int itSpeed=1,itSize=1,itColor=0;
     int nbPommes=1;
-    afficheMenu(win1,win2,colorArray,sizeArray,speedArray,pos,itsize,itspeed,itcolor,nbPommes,score);
+    afficheMenu(win1,win2,colorTab,sizeTab,speedTab,pos,itSize,itSpeed,itColor,nbPommes,score);
     
     int fleche = wgetch(win1);
     
-    while(true){
+    while(true){ //selecteur
         if (fleche == KEY_LEFT){
             if(pos==4){
                 if(nbPommes==1){
@@ -357,22 +269,22 @@ void menu(void){
                 else nbPommes--;
             }
             else if(pos==3){
-                if(itspeed==0){
-                    itspeed=3;
+                if(itSpeed==0){
+                    itSpeed=3;
                 }
-                else itspeed--;
+                else itSpeed--;
             }
             else if(pos==2){
-                if(itsize==0){
-                    itsize=3;
+                if(itSize==0){
+                    itSize=3;
                 }
-                else itsize--;
+                else itSize--;
             }
             else if(pos==1){
-                if(itcolor==0){
-                    itcolor=8;
+                if(itColor==0){
+                    itColor=8;
                 }
-                else itcolor--;
+                else itColor--;
             }
         }
         else if (fleche == KEY_RIGHT){
@@ -383,22 +295,22 @@ void menu(void){
                 else nbPommes++;
             }
             else if(pos==3){
-                if(itspeed==3){
-                    itspeed=0;
+                if(itSpeed==3){
+                    itSpeed=0;
                 }
-                else itspeed++;
+                else itSpeed++;
             }
             else if(pos==2){
-                if(itsize==3){
-                    itsize=0;
+                if(itSize==3){
+                    itSize=0;
                 }
-                else itsize++;
+                else itSize++;
             }
             else if(pos==1){
-                if(itcolor==8){
-                    itcolor=0;
+                if(itColor==8){
+                    itColor=0;
                 }
-                else itcolor++;
+                else itColor++;
             }
         }
         else if (fleche == KEY_DOWN){
@@ -414,23 +326,23 @@ void menu(void){
         }
         else if(fleche=='\n' || fleche==' '){
             if(pos==5){
-                int exit=FALSE;
-                int isSpeed=FALSE,isSize=FALSE;
-                switch(itspeed){
+                int quitter=FALSE;
+                int vitesseCustom=FALSE,tailleCustom=FALSE;
+                switch(itSpeed){
                     case 0:
-                        speed=2.5;
+                        vitesse=2.5;
                     break;
                     case 1:
-                        speed=1.5;
+                        vitesse=1.5;
                     break;
                     case 2:
-                        speed=1;
+                        vitesse=1;
                     break;
                     case 3:
-                        isSpeed=TRUE;
+                        vitesseCustom=TRUE;
                     break;
                 }
-                switch(itsize){
+                switch(itSize){
                     case 0:
                         hauteur=13;
                         largeur=21;
@@ -444,17 +356,17 @@ void menu(void){
                         largeur=41;
                     break;
                     case 3:
-                        isSize=TRUE;
+                        tailleCustom=TRUE;
                     break;
                 }
-                if(isSize==TRUE||isSpeed==TRUE){
-                    exit=customMenuSize(isSize,isSpeed,&largeur,&hauteur,&speed,itcolor);
+                if(tailleCustom==TRUE||vitesseCustom==TRUE){
+                    quitter=customMenuSize(tailleCustom,vitesseCustom,&largeur,&hauteur,&vitesse,itColor);
                 }
-                if(exit==FALSE){
-                    attron(COLOR_PAIR(itcolor));
-                    score=lancerPartie(largeur,hauteur,speed,nbPommes);
-                    flushinp();//efface le buffer des touches préssés lors de la partie, pour ne pas influencer l'affichage du menu 
-                    attroff(COLOR_PAIR(itcolor));
+                if(quitter==FALSE){
+                    attron(COLOR_PAIR(itColor));
+                    score=lancerPartie(largeur,hauteur,vitesse,nbPommes);
+                    flushinp();//efface le buffer des touches préssés après avoir perdu la partie, pour ne pas influencer l'affichage du menu
+                    attroff(COLOR_PAIR(itColor));
                     clear();
                     refresh();
                 }
@@ -463,11 +375,8 @@ void menu(void){
                 pos++;
             }
         }
-        
-        //affichage
 
-        afficheMenu(win1,win2,colorArray,sizeArray,speedArray,pos,itsize,itspeed,itcolor,nbPommes,score);
-
+        afficheMenu(win1,win2,colorTab,sizeTab,speedTab,pos,itSize,itSpeed,itColor,nbPommes,score);
         fleche = wgetch(win1);
 
     }

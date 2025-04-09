@@ -46,7 +46,6 @@ void creerTableauSansSerpent(char **plateau,int largeur, int hauteur,int cellule
 void placerPomme(char **plateau,int largeur, int hauteur,int cellulesVides[][2],int tlogCellulesVides){
     int x,y,aleatoire;
     aleatoire=rand() % tlogCellulesVides;//entre 0 et tlogCellulesVides[inclus]
-
     x=cellulesVides[aleatoire][0];
     y=cellulesVides[aleatoire][1];
     plateau[x][y]='@';
@@ -135,4 +134,75 @@ void libererPlateau(char** plateau, int hauteur) {
         free(plateau[i]);
     }
     free(plateau);
+}
+
+void afficheMenu(WINDOW *win1,WINDOW *win2,char colorTab[][10],char sizeTab[][10],char speedTab[][10],int pos,int itSize,int itSpeed,int itColor,int nbPommes,int score){
+    werase(win1);
+    werase(win2);
+    if(itColor!=0){
+            wattron(win1,COLOR_PAIR(itColor));
+            wattron(win2,COLOR_PAIR(itColor));
+
+    }
+    mvwprintw(win1,2,3, "  /$$$$$$  /$$                 /$$ /$$     /ooooooooo                      /oo                \n");
+    mvwprintw(win1,3,3, " /$$__  $$| $$                | $$| $$    /oo_____  oo                    | oo                \n");
+    mvwprintw(win1,4,3, "| $$  \\__/| $$$$$$$   /$$$$$$ | $$| $$   | oo     \\__/ /ooooooo   /oooooo | oo   /oo  /oooooo \n");
+    mvwprintw(win1,5,3, "|  $$$$$$ | $$__  $$ /$$__  $$| $$| $$   |  oooooo  | | oo__  oo |____  oo| oo  /oo/ /oo__  oo\n");
+    mvwprintw(win1,6,3, " \\____  $$| $$  \\ $$| $$$$$$$$| $$| $$  /\\\\____  oo ^ | oo  \\ oo  /ooooooo| oooooo/ | oooooooo\n");
+    mvwprintw(win1,7,3, " /$$  \\ $$| $$  | $$| $$_____/| $$| $$ /oo     \\ oo   | oo  | oo /oo__  oo| oo_  oo | oo_____/\n");
+    mvwprintw(win1,8,3, "|  $$$$$$/| $$  | $$|  $$$$$$$| $$| $$|  ooooooooo/   | oo  | oo|  ooooooo| oo \\  oo|  oooooooo\n");
+    mvwprintw(win1,9,3, " \\______/ |__/  |__/ \\_______/|__/|__/ \\_________/    |__/  |__/ \\_______/|__/  \\__/ \\_______/\n");
+    switch(pos){
+        case 1: 
+            mvwprintw(win1,12,3,"color  <%s>",colorTab[itColor]);
+            mvwprintw(win1,13,3,"size    %s",sizeTab[itSize]);
+            mvwprintw(win1,14,3,"speed   %s",speedTab[itSpeed]);
+            mvwprintw(win1,15,3,"apples      %d",nbPommes);
+            mvwprintw(win1,16,3,"\tstart");
+        break;
+        case 2:
+            mvwprintw(win1,12,3,"color   %s",colorTab[itColor]);
+            mvwprintw(win1,13,3,"size   <%s>",sizeTab[itSize]);
+            mvwprintw(win1,14,3,"speed   %s",speedTab[itSpeed]);
+            mvwprintw(win1,15,3,"apples      %d",nbPommes);
+            mvwprintw(win1,16,3,"\tstart");
+            break;
+        case 3:
+            mvwprintw(win1,12,3,"color   %s",colorTab[itColor]);
+            mvwprintw(win1,13,3,"size    %s",sizeTab[itSize]);
+            mvwprintw(win1,14,3,"speed  <%s>",speedTab[itSpeed]);
+            mvwprintw(win1,15,3,"apples      %d",nbPommes);
+            mvwprintw(win1,16,3,"\tstart");
+            break;
+        case 4:
+            mvwprintw(win1,12,3,"color   %s",colorTab[itColor]);
+            mvwprintw(win1,13,3,"size    %s",sizeTab[itSize]);
+            mvwprintw(win1,14,3,"speed   %s",speedTab[itSpeed]);
+            mvwprintw(win1,15,3,"apples <    %d    >",nbPommes);
+            mvwprintw(win1,16,3,"\tstart");
+            break;
+        case 5:
+            mvwprintw(win1,12,3,"color   %s",colorTab[itColor]);
+            mvwprintw(win1,13,3,"size    %s",sizeTab[itSize]);
+            mvwprintw(win1,14,3,"speed   %s",speedTab[itSpeed]);
+            mvwprintw(win1,15,3,"apples      %d",nbPommes);
+            mvwprintw(win1,16,3,"  <  start  >");
+            break;
+    }
+    box(win1, 0, 0);
+    wprintw(win2,"\n  controls:\t\t\tbrief:\n");
+    wprintw(win2,"\n  arrows: select/move\t\tEat as many apples\n");//Eat as many apples as you can without hitting the walls or yourself
+    wprintw(win2,"  enter/space: accept\t\tas you can without\n");
+    wprintw(win2,"  q: quit/quitter\t\t\tcrashing !\n");
+    box(win2, 0, 0);
+    if(score!=-1){
+            mvwprintw(win1,17,4,"final size: %d",score);
+    }
+    if(itColor!=0){
+        wattroff(win2,COLOR_PAIR(itColor));
+        wattroff(win1,COLOR_PAIR(itColor));
+
+    }
+    wrefresh(win1);
+    wrefresh(win2);
 }
