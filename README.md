@@ -1,9 +1,11 @@
 # shellsnake
 a minimalistic snake game for the shell coded in c.  
-With this project, I wanted to practice using two-dimensional arrays.
-I also learned how to use the ncurses library, which allows capturing user input continuously while the program is running.  
-This program was coded on Linux and may not function correctly on Windows.
+With this project, I wanted to practice working with dynamically allocated two-dimensional arrays.
+I also learned to use the ncurses library, which allows capturing user input continuously while the program is running and creating windows to build interactive text-based interfaces.
+>[!WARNING]
+>This program was coded for Linux and may not function correctly on Windows.
 
+## Documentation
 see html/index.html for documentation
 
 ## Versions
