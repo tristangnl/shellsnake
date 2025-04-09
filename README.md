@@ -1,5 +1,5 @@
 # shellsnake
-a minimalistic snake game for the shell coded in c.  
+This is a minimalistic snake game for the shell coded in c.  
 With this project, I wanted to practice working with dynamically allocated two-dimensional arrays.
 I also learned to use the ncurses library, which allows capturing user input continuously while the program is running and creating windows to build interactive text-based interfaces.
 >[!WARNING]
