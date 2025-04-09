@@ -12,7 +12,7 @@ There are two versions:
 - A **minimalistic** one, which is highly customizable -> 📁 [**Minimalistic**](https://github.com/tristangnl/shellsnake/tree/main/minimalistic)
 - The **second** one, where I've added some features and styles -> 📁 [**Upgraded**](https://github.com/tristangnl/shellsnake/tree/main/upgraded)
 
-## Documentation (in french)
+## Documentation (in French)
 minimalistic : [https://tristangnl.github.io/shellsnake/minimalistic/](https://tristangnl.github.io/shellsnake/minimalistic/)  
 upgraded : [https://tristangnl.github.io/shellsnake/upgraded/](https://tristangnl.github.io/shellsnake/upgraded/)
 
