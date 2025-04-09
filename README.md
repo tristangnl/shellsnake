@@ -5,15 +5,16 @@ I also learned to use the ncurses library, which allows capturing user input con
 >[!WARNING]
 >This program was coded for Linux and may not function correctly on Windows.
 
-## Documentation
-see html/index.html for documentation
-
 ## Versions
 
 There are two versions:
 
 - A **minimalistic** one, which is highly customizable -> 📁 [**Minimalistic**](https://github.com/tristangnl/shellsnake/tree/main/minimalistic)
 - The **second** one, where I've added some features and styles -> 📁 [**Upgraded**](https://github.com/tristangnl/shellsnake/tree/main/upgraded)
+
+## Documentation
+minimalistic : [https://tristangnl.github.io/shellsnake/minimalistic/](https://tristangnl.github.io/shellsnake/minimalistic/)  
+upgraded : [https://tristangnl.github.io/shellsnake/upgraded/](https://tristangnl.github.io/shellsnake/upgraded/)
 
 ## Look
 The minimalistic game looks like this
