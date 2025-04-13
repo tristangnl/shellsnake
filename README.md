@@ -1,7 +1,7 @@
 # shellsnake
-This is a minimalistic snake game for the shell coded in c.  
-With this project, I wanted to practice working with dynamically allocated two-dimensional arrays.
-I also learned to use the ncurses library, which allows capturing user input continuously while the program is running and creating windows to build interactive text-based interfaces.
+This is a **snake** game for the shell coded in c.  
+With this project, I wanted to practice working with **dynamically allocated two-dimensional arrays**.
+I also learned to use the **ncurses** library, which allows capturing user input continuously while the program is running and creating windows to build interactive text-based interfaces.
 >[!WARNING]
 >This program was coded for Linux and may not function correctly on Windows.
 
@@ -39,6 +39,30 @@ X                                                           X
 X                                                           X  
 X                                                           X  
 X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X  
+```
+The upgraded version has a menu that looks like this
+
+```
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                                  │
+│    /$$$$$$  /$$                 /$$ /$$     /ooooooooo                      /oo                  │
+│   /$$__  $$| $$                | $$| $$    /oo_____  oo                    | oo                  │
+│  | $$  \__/| $$$$$$$   /$$$$$$ | $$| $$   | oo     \__/ /ooooooo   /oooooo | oo   /oo  /oooooo   │
+│  |  $$$$$$ | $$__  $$ /$$__  $$| $$| $$   |  oooooo  | | oo__  oo |____  oo| oo  /oo/ /oo__  oo  │
+│   \____  $$| $$  \ $$| $$$$$$$$| $$| $$  /\\____  oo ^ | oo  \ oo  /ooooooo| oooooo/ | oooooooo  │
+│   /$$  \ $$| $$  | $$| $$_____/| $$| $$ /oo     \ oo   | oo  | oo /oo__  oo| oo_  oo | oo_____/  │
+│  |  $$$$$$/| $$  | $$|  $$$$$$$| $$| $$|  ooooooooo/   | oo  | oo|  ooooooo| oo \  oo|  oooooooo │
+│   \______/ |__/  |__/ \_______/|__/|__/ \_________/    |__/  |__/ \_______/|__/  \__/ \_______/  │
+│                                                                                                  │
+│                                       ┌────────────────────────────────────────────────────────┐ │
+│  color    default                     │ controls:                     brief:                   │ │
+│  size     medium                      │                                                        │ │
+│  speed    medium                      │ arrows: select/move           Eat as many apples       │ │
+│  apples      1                        │ enter/space: accept           as you can without       │ │
+│    <  start  >                        │ q: quit/quitter                       crashing !       │ │
+│                                       │                                                        │ │
+│                                       └────────────────────────────────────────────────────────┘ │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Controls
