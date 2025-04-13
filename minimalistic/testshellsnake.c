@@ -91,9 +91,9 @@ int main(void){
     }
 
     endwin();
-    printf("votre taille finale: %d\n",taille);
+    printf("your final size: %d\n",taille);
     if(taille==(TAILLEX-2)*(TAILLEY-2)){
-        printf("incroyable, vous avez mangé toutes les pommes!\n");
+        printf("Seriously? You ate all the apples!!?\n");
     }
     return 0;
 }
