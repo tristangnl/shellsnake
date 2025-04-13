@@ -59,7 +59,7 @@ The upgraded version has a menu that looks like this
 │  size     medium                      │                                                        │ │
 │  speed    medium                      │ arrows: select/move           Eat as many apples       │ │
 │  apples      1                        │ enter/space: accept           as you can without       │ │
-│    <  start  >                        │ q: quit/quitter                       crashing !       │ │
+│    <  start  >                        │ q: quit/return                        crashing !       │ │
 │                                       │                                                        │ │
 │                                       └────────────────────────────────────────────────────────┘ │
 └──────────────────────────────────────────────────────────────────────────────────────────────────┘
