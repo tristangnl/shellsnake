@@ -17,7 +17,7 @@ minimalistic : [https://tristangnl.github.io/shellsnake/minimalistic/](https://t
 upgraded : [https://tristangnl.github.io/shellsnake/upgraded/](https://tristangnl.github.io/shellsnake/upgraded/)
 
 ## Look
-The minimalistic game looks like this
+The **minimalistic** game looks like this :
 
 ```
 X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X  
@@ -40,7 +40,7 @@ X                                                           X
 X                                                           X  
 X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X  
 ```
-The upgraded version has a menu that looks like this
+The **upgraded** version has a menu that looks like this :
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -64,6 +64,7 @@ The upgraded version has a menu that looks like this
 │                                       └────────────────────────────────────────────────────────┘ │
 └──────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
+It allows you to customise your game
 
 ### Controls
 
