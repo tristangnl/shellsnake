@@ -193,7 +193,7 @@ void afficheMenu(WINDOW *win1,WINDOW *win2,char colorTab[][10],char sizeTab[][10
     wprintw(win2,"\n  controls:\t\t\tbrief:\n");
     wprintw(win2,"\n  arrows: select/move\t\tEat as many apples\n");//Eat as many apples as you can without hitting the walls or yourself
     wprintw(win2,"  enter/space: accept\t\tas you can without\n");
-    wprintw(win2,"  q: quit/quitter\t\t\tcrashing !\n");
+    wprintw(win2,"  q: quit/return\t\t\tcrashing !\n");
     box(win2, 0, 0);
     if(score!=-1){
             mvwprintw(win1,17,4,"final size: %d",score);
